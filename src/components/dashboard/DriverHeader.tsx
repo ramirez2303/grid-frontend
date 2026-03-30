@@ -37,7 +37,7 @@ export function DriverHeader({ driver, standing }: DriverHeaderProps) {
 
       <div className="relative p-6 sm:p-8">
         <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-          <DriverImage driverId={driver.id} firstName={driver.firstName} lastName={driver.lastName} teamColor={color} size="xl" />
+          <DriverImage driverId={driver.id} firstName={driver.firstName} lastName={driver.lastName} teamColor={color} size="xl" variant="fullbody" />
 
           <div className="flex-1">
             {standing && (

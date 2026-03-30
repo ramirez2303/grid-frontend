@@ -19,8 +19,8 @@ export function DriverSeasonStats({ standing, results, driverId, teamColor }: Dr
   for (const race of results) {
     const dResult = race.results.find((r) => r.driverId === driverId);
     if (!dResult) continue;
-    if (dResult.position !== null && dResult.position <= 3) podiums++;
-    if (dResult.status && dResult.status !== "Finished") dnfs++;
+    if (dResult.position != null && dResult.position >= 1 && dResult.position <= 3) podiums++;
+    if (dResult.position == null || (dResult.status != null && dResult.status !== "Finished")) dnfs++;
     if (dResult.fastestLap) fastestLaps++;
   }
 

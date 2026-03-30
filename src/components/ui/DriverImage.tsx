@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { getDriverImageUrl } from "@/lib/f1Media";
+import { getDriverImageUrl, getDriverHeadshotUrl } from "@/lib/f1Media";
 
 interface DriverImageProps {
   driverId: string;
@@ -10,15 +10,19 @@ interface DriverImageProps {
   lastName: string;
   teamColor: string;
   size?: "sm" | "md" | "lg" | "xl";
+  variant?: "headshot" | "fullbody";
   className?: string;
 }
 
 const sizes = { sm: 32, md: 48, lg: 80, xl: 120 };
 
-export function DriverImage({ driverId, firstName, lastName, teamColor, size = "md", className = "" }: DriverImageProps) {
+export function DriverImage({ driverId, firstName, lastName, teamColor, size = "md", variant = "headshot", className = "" }: DriverImageProps) {
   const [failed, setFailed] = useState(false);
   const px = sizes[size];
-  const url = getDriverImageUrl(driverId, px * 2);
+
+  const url = variant === "headshot"
+    ? getDriverHeadshotUrl(driverId, px * 2)
+    : getDriverImageUrl(driverId, px * 2);
 
   if (failed || !url) {
     return (

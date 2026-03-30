@@ -7,6 +7,7 @@ import { TeamHeader } from "@/components/dashboard/TeamHeader";
 import { DriverSummaryCard } from "@/components/dashboard/DriverSummaryCard";
 import { TeamHistory } from "@/components/dashboard/TeamHistory";
 import { SeasonResults } from "@/components/dashboard/SeasonResults";
+import { HeadToHead } from "@/components/dashboard/HeadToHead";
 import { SectionReveal } from "@/components/ui/SectionReveal";
 
 import type { RaceWithResults } from "@/types/api";
@@ -72,8 +73,19 @@ export default function TeamDetailPage({ params }: PageProps) {
         </div>
       </SectionReveal>
 
-      {calendar && results.length > 0 && (
+      {driverStandings && results.length > 0 && (
         <SectionReveal delay={0.1}>
+          <HeadToHead
+            drivers={team.drivers}
+            standings={driverStandings}
+            results={results}
+            teamColor={team.colorPrimary}
+          />
+        </SectionReveal>
+      )}
+
+      {calendar && results.length > 0 && (
+        <SectionReveal delay={0.15}>
           <SeasonResults
             calendar={calendar}
             results={results}

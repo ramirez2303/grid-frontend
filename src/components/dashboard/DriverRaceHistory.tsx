@@ -1,5 +1,8 @@
 "use client";
 
+import { Zap } from "lucide-react";
+import { CountryFlag } from "@/components/ui/CountryFlag";
+
 import type { CalendarRace, RaceWithResults } from "@/types/api";
 
 interface DriverRaceHistoryProps {
@@ -29,6 +32,7 @@ export function DriverRaceHistory({ calendar, results, driverId, teamColor }: Dr
               <th className="py-3 px-3 text-center">Grid</th>
               <th className="py-3 px-3 text-center">Pos</th>
               <th className="py-3 px-3 text-right">Pts</th>
+              <th className="py-3 px-3 text-center hidden sm:table-cell">FL</th>
             </tr>
           </thead>
           <tbody>
@@ -43,7 +47,12 @@ export function DriverRaceHistory({ calendar, results, driverId, teamColor }: Dr
                   <td className="py-2.5 px-3 text-grid-text-muted" style={{ fontFamily: "var(--font-mono)" }}>
                     R{race.round}
                   </td>
-                  <td className="py-2.5 px-3 text-grid-text">{race.name.replace(" Grand Prix", "")}</td>
+                  <td className="py-2.5 px-3 text-grid-text">
+                    <span className="inline-flex items-center gap-1.5">
+                      <CountryFlag country={race.country} size={16} />
+                      {race.name.replace(" Grand Prix", "")}
+                    </span>
+                  </td>
                   <td className="py-2.5 px-3 text-center text-grid-text-secondary" style={{ fontFamily: "var(--font-mono)" }}>
                     {dResult?.gridPosition ?? "—"}
                   </td>
@@ -60,6 +69,9 @@ export function DriverRaceHistory({ calendar, results, driverId, teamColor }: Dr
                   </td>
                   <td className="py-2.5 px-3 text-right font-bold text-grid-text" style={{ fontFamily: "var(--font-mono)" }}>
                     {dResult?.points ?? 0}
+                  </td>
+                  <td className="py-2.5 px-3 text-center hidden sm:table-cell">
+                    {dResult?.fastestLap && <Zap size={14} className="mx-auto text-purple-400" />}
                   </td>
                 </tr>
               );

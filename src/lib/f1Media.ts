@@ -47,6 +47,12 @@ export function getDriverImageUrl(driverId: string, width: number = 440): string
   return `${F1_BASE}/c_lfill,w_${width}/q_auto/v1740000001/common/f1/2026/${entry.team}/${entry.code}/2026${entry.team}${entry.code}right.webp`;
 }
 
+export function getDriverHeadshotUrl(driverId: string, size: number = 96): string | null {
+  const entry = driverCodes[driverId];
+  if (!entry) return null;
+  return `${F1_BASE}/c_thumb,g_face,w_${size},h_${size}/q_auto/v1740000001/common/f1/2026/${entry.team}/${entry.code}/2026${entry.team}${entry.code}right.webp`;
+}
+
 export function getTeamLogoUrl(teamId: string, width: number = 48): string | null {
   const folder = teamFolders[teamId];
   if (!folder) return null;

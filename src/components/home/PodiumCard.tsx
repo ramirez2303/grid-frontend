@@ -33,6 +33,7 @@ export function PodiumCard({ result, index }: PodiumCardProps) {
           lastName={result.lastName}
           teamColor={result.teamColor}
           size={isWinner ? "lg" : "md"}
+          variant="fullbody"
           className="mb-2"
         />
         <span

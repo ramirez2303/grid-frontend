@@ -10,7 +10,7 @@ import { CircuitDetailPanel } from "@/components/circuits/CircuitDetailPanel";
 const GlobeView = dynamic(
   () => import("@/components/circuits/GlobeView").then((m) => ({ default: m.GlobeView })),
   { ssr: false, loading: () => (
-    <div className="flex h-[560px] items-center justify-center rounded-2xl bg-grid-surface border border-white/[0.06]">
+    <div className="flex h-[800px] items-center justify-center rounded-2xl bg-grid-surface border border-white/[0.06]">
       <div className="h-8 w-8 animate-spin rounded-full border-2 border-grid-text-muted border-t-team-mercedes" />
     </div>
   )},

@@ -14,16 +14,27 @@ export function TrackLayout({ circuitId, color = "#F0F0F2", className = "" }: Tr
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
+    setSvgContent(null);
+    setFailed(false);
     fetch(`/tracks/${circuitId}.svg`)
       .then((r) => {
         if (!r.ok) throw new Error("not found");
         return r.text();
       })
       .then((text) => {
-        const colored = text
+        let svg = text
           .replace(/stroke="[^"]*"/g, `stroke="${color}"`)
-          .replace(/fill="white"/g, `fill="${color}"`);
-        setSvgContent(colored);
+          .replace(/stroke:\s*#[^;]+;/g, `stroke: ${color};`)
+          .replace(/fill="white"/g, `fill="${color}"`)
+          .replace(/width="[^"]*"/, 'width="100%"')
+          .replace(/height="[^"]*"/, 'height="100%"');
+        if (!svg.includes("viewBox")) {
+          svg = svg.replace("<svg ", '<svg viewBox="0 0 500 500" ');
+        }
+        if (!svg.includes("preserveAspectRatio")) {
+          svg = svg.replace("<svg ", '<svg preserveAspectRatio="xMidYMid meet" ');
+        }
+        setSvgContent(svg);
       })
       .catch(() => setFailed(true));
   }, [circuitId, color]);
@@ -41,7 +52,7 @@ export function TrackLayout({ circuitId, color = "#F0F0F2", className = "" }: Tr
 
   return (
     <div
-      className={`flex items-center justify-center ${className}`}
+      className={`flex items-center justify-center overflow-hidden [&>svg]:w-full [&>svg]:h-full [&>svg]:max-w-full [&>svg]:max-h-full ${className}`}
       dangerouslySetInnerHTML={{ __html: svgContent }}
     />
   );

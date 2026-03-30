@@ -12,7 +12,7 @@ interface CircuitListProps {
 
 export function CircuitList({ calendar, selectedId, onSelect }: CircuitListProps) {
   return (
-    <div className="rounded-2xl bg-grid-surface border border-white/[0.06] overflow-hidden h-[560px] flex flex-col">
+    <div className="rounded-2xl bg-grid-surface border border-white/[0.06] overflow-hidden h-[800px] flex flex-col">
       <div className="px-4 py-3 border-b border-white/[0.06] flex-shrink-0">
         <h3 className="text-sm font-bold uppercase tracking-widest text-grid-text-muted">
           Calendario 2026

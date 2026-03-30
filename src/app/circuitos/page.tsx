@@ -2,17 +2,15 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { AnimatePresence } from "framer-motion";
 import { useApi } from "@/hooks/useApi";
 import { getCalendar, getCircuits } from "@/lib/api";
 import { CircuitList } from "@/components/circuits/CircuitList";
 import { CircuitDetailPanel } from "@/components/circuits/CircuitDetailPanel";
-import { CircuitTooltip } from "@/components/circuits/CircuitTooltip";
 
 const GlobeView = dynamic(
   () => import("@/components/circuits/GlobeView").then((m) => ({ default: m.GlobeView })),
   { ssr: false, loading: () => (
-    <div className="flex aspect-square max-h-[500px] items-center justify-center rounded-2xl bg-grid-surface border border-white/[0.06]">
+    <div className="flex h-[560px] items-center justify-center rounded-2xl bg-grid-surface border border-white/[0.06]">
       <div className="h-8 w-8 animate-spin rounded-full border-2 border-grid-text-muted border-t-team-mercedes" />
     </div>
   )},
@@ -43,28 +41,21 @@ export default function CircuitosPage() {
         <p className="text-sm text-grid-text-muted">22 Grandes Premios alrededor del mundo</p>
       </div>
 
-      {/* Globe + List */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <div className="relative">
+      {/* Globe 60% + List 40% */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-6">
+        <div className="lg:col-span-3">
           <GlobeView
             circuits={circuits ?? []}
             calendar={calendar ?? []}
             selectedId={selectedId}
             onSelectCircuit={setSelectedId}
           />
-          {/* Tooltip overlay */}
-          {selectedRace && (
-            <div className="absolute top-3 right-3 z-10">
-              <AnimatePresence>
-                <CircuitTooltip race={selectedRace} />
-              </AnimatePresence>
-            </div>
-          )}
         </div>
-        <CircuitList calendar={calendar ?? []} selectedId={selectedId} onSelect={setSelectedId} />
+        <div className="lg:col-span-2">
+          <CircuitList calendar={calendar ?? []} selectedId={selectedId} onSelect={setSelectedId} />
+        </div>
       </div>
 
-      {/* Detail panel (replaces timeline) */}
       <CircuitDetailPanel race={selectedRace} />
     </div>
   );

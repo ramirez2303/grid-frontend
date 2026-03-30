@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { GlobeCoastlines } from "./GlobeCoastlines";
 
@@ -25,29 +25,44 @@ interface GlobeSceneProps {
 function latLngToVec3(lat: number, lng: number, r: number): THREE.Vector3 {
   const phi = (90 - lat) * (Math.PI / 180);
   const theta = (lng + 180) * (Math.PI / 180);
-  return new THREE.Vector3(-(r * Math.sin(phi) * Math.cos(theta)), r * Math.cos(phi), r * Math.sin(phi) * Math.sin(theta));
+  return new THREE.Vector3(
+    -(r * Math.sin(phi) * Math.cos(theta)),
+    r * Math.cos(phi),
+    r * Math.sin(phi) * Math.sin(theta),
+  );
+}
+
+function latLngToCameraPos(lat: number, lng: number, dist: number): THREE.Vector3 {
+  return latLngToVec3(lat, lng, dist);
 }
 
 export function GlobeScene({ points, selectedId, targetLatLng, onPointClick, topoData }: GlobeSceneProps) {
-  const groupRef = useRef<THREE.Group>(null);
-  const targetRot = useRef<{ x: number; y: number } | null>(null);
+  const { camera } = useThree();
+  const targetCamPos = useRef<THREE.Vector3 | null>(null);
+  const autoAngle = useRef(0);
+  const hasSelection = !!selectedId;
 
   if (targetLatLng) {
-    targetRot.current = { x: targetLatLng.lat * (Math.PI / 180), y: -targetLatLng.lng * (Math.PI / 180) };
+    targetCamPos.current = latLngToCameraPos(targetLatLng.lat, targetLatLng.lng, 5);
+  } else {
+    targetCamPos.current = null;
   }
 
   useFrame((_, delta) => {
-    if (!groupRef.current) return;
-    if (targetRot.current) {
-      groupRef.current.rotation.x += (targetRot.current.x - groupRef.current.rotation.x) * 2 * delta;
-      groupRef.current.rotation.y += (targetRot.current.y - groupRef.current.rotation.y) * 2 * delta;
-    } else {
-      groupRef.current.rotation.y += 0.08 * delta;
+    if (targetCamPos.current) {
+      camera.position.lerp(targetCamPos.current, 2.5 * delta);
+      camera.lookAt(0, 0, 0);
+    } else if (!hasSelection) {
+      autoAngle.current += 0.15 * delta;
+      camera.position.x = 5 * Math.sin(autoAngle.current);
+      camera.position.z = 5 * Math.cos(autoAngle.current);
+      camera.position.y = 1;
+      camera.lookAt(0, 0, 0);
     }
   });
 
   return (
-    <group ref={groupRef}>
+    <group>
       <mesh>
         <sphereGeometry args={[2, 64, 64]} />
         <meshStandardMaterial color="#0A0A12" roughness={0.95} metalness={0.05} />
@@ -55,7 +70,7 @@ export function GlobeScene({ points, selectedId, targetLatLng, onPointClick, top
 
       <mesh>
         <sphereGeometry args={[2.003, 36, 18]} />
-        <meshBasicMaterial color="#1a1a2e" wireframe transparent opacity={0.15} />
+        <meshBasicMaterial color="#1a1a2e" wireframe transparent opacity={0.12} />
       </mesh>
 
       {topoData && <GlobeCoastlines topoData={topoData} radius={2.006} />}
@@ -66,14 +81,18 @@ export function GlobeScene({ points, selectedId, targetLatLng, onPointClick, top
         const color = isSel ? "#FF8000" : pt.completed ? "#27F4D2" : "#8A8A95";
         return (
           <group key={pt.id} position={pos}>
-            <mesh onClick={(e) => { e.stopPropagation(); onPointClick(pt.id); }}>
-              <sphereGeometry args={[isSel ? 0.055 : 0.03, 16, 16]} />
+            <mesh
+              onClick={(e) => { e.stopPropagation(); onPointClick(pt.id); }}
+              onPointerOver={(e) => { document.body.style.cursor = "pointer"; e.stopPropagation(); }}
+              onPointerOut={() => { document.body.style.cursor = "auto"; }}
+            >
+              <sphereGeometry args={[isSel ? 0.06 : 0.035, 16, 16]} />
               <meshBasicMaterial color={color} />
             </mesh>
             {isSel && (
               <mesh>
-                <ringGeometry args={[0.07, 0.09, 32]} />
-                <meshBasicMaterial color="#FF8000" transparent opacity={0.6} side={THREE.DoubleSide} />
+                <ringGeometry args={[0.08, 0.1, 32]} />
+                <meshBasicMaterial color="#FF8000" transparent opacity={0.5} side={THREE.DoubleSide} />
               </mesh>
             )}
           </group>

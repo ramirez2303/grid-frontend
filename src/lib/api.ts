@@ -4,6 +4,9 @@ import type {
   RaceWithResults,
   DriverStanding,
   ConstructorStanding,
+  TeamListItem,
+  TeamDetail,
+  DriverDetail,
 } from "@/types/api";
 
 const BASE_URL = process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:3001";
@@ -38,4 +41,20 @@ export function getDriverStandings(): Promise<DriverStanding[]> {
 
 export function getConstructorStandings(): Promise<ConstructorStanding[]> {
   return fetchApi<ConstructorStanding[]>("/api/standings/constructors");
+}
+
+export function getTeams(): Promise<TeamListItem[]> {
+  return fetchApi<TeamListItem[]>("/api/teams");
+}
+
+export function getTeam(teamId: string): Promise<TeamDetail> {
+  return fetchApi<TeamDetail>(`/api/teams/${teamId}`);
+}
+
+export function getDriver(driverId: string): Promise<DriverDetail> {
+  return fetchApi<DriverDetail>(`/api/drivers/${driverId}`);
+}
+
+export function getResults(round: number): Promise<RaceWithResults> {
+  return fetchApi<RaceWithResults>(`/api/results/${round}`);
 }

@@ -70,3 +70,63 @@ export interface ConstructorStanding {
   wins: number;
   engine: string;
 }
+
+export interface TeamDriverSummary {
+  id: string;
+  firstName: string;
+  lastName: string;
+  abbreviation: string;
+  number: number;
+  nationality: string;
+}
+
+export interface TeamListItem {
+  id: string;
+  name: string;
+  fullName: string;
+  colorPrimary: string;
+  engine: string;
+  championships: number;
+  wins: number;
+  driverCount: number;
+}
+
+export interface TeamDetail {
+  id: string;
+  name: string;
+  fullName: string;
+  colorPrimary: string;
+  colorSecondary: string | null;
+  base: string | null;
+  teamPrincipal: string | null;
+  engine: string;
+  firstSeason: number | null;
+  championships: number;
+  wins: number;
+  podiums: number;
+  bio: string | null;
+  drivers: TeamDriverSummary[];
+}
+
+export interface DriverTeamSummary {
+  id: string;
+  name: string;
+  colorPrimary: string;
+}
+
+export interface DriverDetail {
+  id: string;
+  firstName: string;
+  lastName: string;
+  abbreviation: string;
+  number: number;
+  nationality: string;
+  dateOfBirth: string | null;
+  championships: number;
+  wins: number;
+  podiums: number;
+  poles: number;
+  fastestLaps: number;
+  firstSeason: number | null;
+  team: DriverTeamSummary;
+}

@@ -6,6 +6,7 @@ import { getCircuit, getCalendar, getResults } from "@/lib/api";
 import { CircuitHero } from "@/components/circuits/CircuitHero";
 import { CircuitTechnical } from "@/components/circuits/CircuitTechnical";
 import { CircuitRaceResult } from "@/components/circuits/CircuitRaceResult";
+import { CircuitWinners } from "@/components/circuits/CircuitWinners";
 import { SectionReveal } from "@/components/ui/SectionReveal";
 
 import type { RaceWithResults } from "@/types/api";
@@ -57,6 +58,10 @@ export default function CircuitDetailPage({ params }: PageProps) {
           <CircuitRaceResult result={raceResult} />
         </SectionReveal>
       )}
+
+      <SectionReveal delay={0.2}>
+        <CircuitWinners circuitId={circuitId} />
+      </SectionReveal>
     </div>
   );
 }

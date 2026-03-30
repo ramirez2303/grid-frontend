@@ -1,6 +1,6 @@
 "use client";
 
-import { Ruler, CornerDownRight, Zap, MapPin, Timer, Calendar } from "lucide-react";
+import { Ruler, CornerDownRight, Zap, MapPin, Timer, Calendar, RotateCw, Hash } from "lucide-react";
 
 import type { CircuitDetail } from "@/types/api";
 
@@ -9,14 +9,18 @@ interface CircuitTechnicalProps {
 }
 
 export function CircuitTechnical({ circuit }: CircuitTechnicalProps) {
+  const typeLabel = circuit.type === "street" ? "Callejero" : circuit.type === "permanent" ? "Permanente" : circuit.type ?? "—";
+
   const stats = [
     { icon: Ruler, label: "Longitud", value: circuit.length ? `${circuit.length} km` : "—" },
     { icon: CornerDownRight, label: "Curvas", value: circuit.turns ?? "—" },
     { icon: Zap, label: "Zonas DRS", value: circuit.drsZones ?? "—" },
-    { icon: MapPin, label: "Tipo", value: circuit.type === "street" ? "Callejero" : circuit.type === "permanent" ? "Permanente" : circuit.type ?? "—" },
+    { icon: MapPin, label: "Tipo", value: typeLabel },
+    { icon: RotateCw, label: "Vueltas", value: circuit.numberOfLaps ?? "—" },
+    { icon: Hash, label: "Distancia", value: circuit.raceDistance ?? "—" },
+    { icon: Calendar, label: "Primera edición", value: circuit.firstGrandPrix ?? "—" },
+    { icon: Calendar, label: "Ediciones", value: circuit.totalEditions ?? "—" },
   ];
-
-  const hasLapRecord = circuit.lapRecordTime && circuit.lapRecordDriver;
 
   return (
     <div>
@@ -27,7 +31,7 @@ export function CircuitTechnical({ circuit }: CircuitTechnicalProps) {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         {stats.map((stat) => (
           <div key={stat.label} className="rounded-xl bg-grid-surface border border-white/[0.06] p-4 text-center">
-            <stat.icon size={18} className="mx-auto mb-2 text-team-mercedes" />
+            <stat.icon size={16} className="mx-auto mb-2 text-team-mercedes" />
             <p className="text-2xl font-bold text-grid-text" style={{ fontFamily: "var(--font-display)" }}>
               {stat.value}
             </p>
@@ -36,28 +40,25 @@ export function CircuitTechnical({ circuit }: CircuitTechnicalProps) {
         ))}
       </div>
 
-      {hasLapRecord && (
-        <div className="rounded-xl bg-grid-surface border border-white/[0.06] p-4 flex items-center gap-4 mb-6">
+      {circuit.lapRecordTime && circuit.lapRecordDriver && (
+        <div className="rounded-xl bg-grid-surface border border-white/[0.06] p-4 flex items-center gap-4 mb-4">
           <Timer size={18} className="text-purple-400 flex-shrink-0" />
           <div>
             <p className="text-[10px] uppercase tracking-widest text-grid-text-muted">Récord de vuelta</p>
-            <p className="text-lg font-bold text-grid-text" style={{ fontFamily: "var(--font-mono)" }}>
+            <p className="text-xl font-bold text-grid-text" style={{ fontFamily: "var(--font-mono)" }}>
               {circuit.lapRecordTime}
             </p>
           </div>
           <div className="ml-auto text-right">
-            <p className="text-sm text-grid-text">{circuit.lapRecordDriver}</p>
-            <p className="text-xs text-grid-text-muted flex items-center gap-1 justify-end">
-              <Calendar size={10} /> {circuit.lapRecordYear}
-            </p>
+            <p className="text-sm font-medium text-grid-text">{circuit.lapRecordDriver}</p>
+            <p className="text-xs text-grid-text-muted">{circuit.lapRecordYear}</p>
           </div>
         </div>
       )}
 
-      {/* Coordinates */}
       {circuit.latitude != null && circuit.longitude != null && (
         <p className="text-xs text-grid-text-muted" style={{ fontFamily: "var(--font-mono)" }}>
-          📍 {circuit.latitude.toFixed(4)}°, {circuit.longitude.toFixed(4)}°
+          {circuit.latitude.toFixed(4)}°, {circuit.longitude.toFixed(4)}°
         </p>
       )}
     </div>

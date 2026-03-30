@@ -9,6 +9,7 @@ import type {
   DriverDetail,
   CircuitListItem,
   CircuitDetail,
+  CircuitWinner,
 } from "@/types/api";
 
 const BASE_URL = process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:3001";
@@ -67,4 +68,8 @@ export function getCircuits(): Promise<CircuitListItem[]> {
 
 export function getCircuit(circuitId: string): Promise<CircuitDetail> {
   return fetchApi<CircuitDetail>(`/api/circuits/${circuitId}`);
+}
+
+export function getCircuitWinners(circuitId: string): Promise<CircuitWinner[]> {
+  return fetchApi<CircuitWinner[]>(`/api/circuits/${circuitId}/winners`);
 }

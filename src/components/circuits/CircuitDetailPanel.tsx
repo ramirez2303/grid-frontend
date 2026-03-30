@@ -55,27 +55,17 @@ export function CircuitDetailPanel({ race }: CircuitDetailPanelProps) {
                 <p className="text-sm text-grid-text-muted mb-4">{circuit.name} — {circuit.city}, {circuit.country}</p>
 
                 {/* Technical stats */}
+                {circuit.description && (
+                  <p className="text-xs text-grid-text-secondary leading-relaxed mb-4">{circuit.description}</p>
+                )}
+
                 <div className="flex flex-wrap gap-4 text-xs">
-                  {circuit.length && (
-                    <span className="flex items-center gap-1 text-grid-text-secondary">
-                      <Ruler size={12} className="text-team-mercedes" /> {circuit.length} km
-                    </span>
-                  )}
-                  {circuit.turns && (
-                    <span className="flex items-center gap-1 text-grid-text-secondary">
-                      <CornerDownRight size={12} className="text-team-mercedes" /> {circuit.turns} curvas
-                    </span>
-                  )}
-                  {circuit.drsZones && (
-                    <span className="flex items-center gap-1 text-grid-text-secondary">
-                      <Zap size={12} className="text-team-mercedes" /> {circuit.drsZones} DRS
-                    </span>
-                  )}
-                  {circuit.type && (
-                    <span className="flex items-center gap-1 text-grid-text-secondary">
-                      <MapPin size={12} className="text-team-mercedes" /> {circuit.type === "street" ? "Callejero" : "Permanente"}
-                    </span>
-                  )}
+                  {circuit.length && <span className="flex items-center gap-1 text-grid-text-secondary"><Ruler size={12} className="text-team-mercedes" /> {circuit.length} km</span>}
+                  {circuit.turns && <span className="flex items-center gap-1 text-grid-text-secondary"><CornerDownRight size={12} className="text-team-mercedes" /> {circuit.turns} curvas</span>}
+                  {circuit.drsZones && <span className="flex items-center gap-1 text-grid-text-secondary"><Zap size={12} className="text-team-mercedes" /> {circuit.drsZones} DRS</span>}
+                  {circuit.type && <span className="flex items-center gap-1 text-grid-text-secondary"><MapPin size={12} className="text-team-mercedes" /> {circuit.type === "street" ? "Callejero" : "Permanente"}</span>}
+                  {circuit.numberOfLaps && <span className="flex items-center gap-1 text-grid-text-secondary">{circuit.numberOfLaps} vueltas</span>}
+                  {circuit.lapRecordTime && <span className="flex items-center gap-1 text-grid-text-secondary" style={{ fontFamily: "var(--font-mono)" }}>Récord: {circuit.lapRecordTime}</span>}
                 </div>
               </div>
             </div>

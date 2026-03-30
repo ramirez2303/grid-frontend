@@ -38,6 +38,9 @@ export function CircuitHero({ circuit, race, winnerColor }: CircuitHeroProps) {
             </div>
             <p className="text-sm text-grid-text-secondary">{circuit.name}</p>
             <p className="text-xs text-grid-text-muted mt-1">{circuit.city}, {circuit.country}</p>
+            {circuit.description && (
+              <p className="text-sm text-grid-text-secondary mt-3 max-w-xl leading-relaxed">{circuit.description}</p>
+            )}
           </div>
 
           <TrackLayout

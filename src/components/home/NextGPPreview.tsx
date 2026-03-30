@@ -1,7 +1,7 @@
 "use client";
 
 import { MapPin, Timer, Rotate3d, Calendar, Gauge, CornerDownRight, Zap } from "lucide-react";
-import { getCountryFlag } from "@/lib/countryFlags";
+import { CountryFlag } from "@/components/ui/CountryFlag";
 
 import type { CalendarRace } from "@/types/api";
 
@@ -12,7 +12,6 @@ interface NextGPPreviewProps {
 export function NextGPPreview({ race }: NextGPPreviewProps) {
   if (!race) return null;
 
-  const flag = getCountryFlag(race.country);
   const raceDate = new Date(race.date);
 
   return (
@@ -36,7 +35,7 @@ export function NextGPPreview({ race }: NextGPPreviewProps) {
               className="text-3xl sm:text-4xl tracking-wider text-grid-text mb-1"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              {flag} {race.name.replace(" Grand Prix", "")}
+              <CountryFlag country={race.country} size={28} className="mr-2 align-middle" />{race.name.replace(" Grand Prix", "")}
             </h3>
             <p className="text-sm text-grid-text-secondary mb-6">{race.circuitName}</p>
 

@@ -2,7 +2,7 @@
 
 import { useApi } from "@/hooks/useApi";
 import { getLastRaceResult } from "@/lib/api";
-import { getCountryFlag } from "@/lib/countryFlags";
+import { CountryFlag } from "@/components/ui/CountryFlag";
 import { PodiumCard } from "./PodiumCard";
 
 export function LastRaceResult() {
@@ -31,7 +31,7 @@ export function LastRaceResult() {
             className="text-2xl sm:text-3xl tracking-wider text-grid-text"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            {getCountryFlag(race.country)} {race.name}
+            <CountryFlag country={race.country} size={24} className="mr-2 align-middle" />{race.name}
           </h2>
           <p className="text-sm text-grid-text-muted">{race.circuitName} — Ronda {race.round}</p>
         </div>

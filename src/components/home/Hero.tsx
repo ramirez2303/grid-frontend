@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { getCountryFlag } from "@/lib/countryFlags";
+import { CountryFlag } from "@/components/ui/CountryFlag";
 import { CountdownTimer } from "./CountdownTimer";
 
 import type { CalendarRace } from "@/types/api";
@@ -18,8 +18,6 @@ export function Hero({ nextRace }: HeroProps) {
       </div>
     );
   }
-
-  const flag = getCountryFlag(nextRace.country);
 
   return (
     <div className="relative overflow-hidden min-h-[70vh] flex items-center justify-center">
@@ -55,7 +53,7 @@ export function Hero({ nextRace }: HeroProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          <span className="text-5xl">{flag}</span>
+          <CountryFlag country={nextRace.country} size={48} />
           <h1
             className="text-4xl sm:text-6xl lg:text-8xl tracking-wider text-grid-text drop-shadow-[0_0_30px_rgba(39,244,210,0.15)]"
             style={{ fontFamily: "var(--font-display)" }}

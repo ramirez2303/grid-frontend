@@ -135,3 +135,5 @@ export interface DriverDetail {
   firstSeason: number | null;
   team: DriverTeamSummary;
 }
+
+export type { CircuitListItem, CircuitDetail } from "./circuit";

@@ -37,7 +37,7 @@ export function CircuitTechnical({ circuit }: CircuitTechnicalProps) {
       </div>
 
       {hasLapRecord && (
-        <div className="rounded-xl bg-grid-surface border border-white/[0.06] p-4 flex items-center gap-4">
+        <div className="rounded-xl bg-grid-surface border border-white/[0.06] p-4 flex items-center gap-4 mb-6">
           <Timer size={18} className="text-purple-400 flex-shrink-0" />
           <div>
             <p className="text-[10px] uppercase tracking-widest text-grid-text-muted">Récord de vuelta</p>
@@ -52,6 +52,13 @@ export function CircuitTechnical({ circuit }: CircuitTechnicalProps) {
             </p>
           </div>
         </div>
+      )}
+
+      {/* Coordinates */}
+      {circuit.latitude != null && circuit.longitude != null && (
+        <p className="text-xs text-grid-text-muted" style={{ fontFamily: "var(--font-mono)" }}>
+          📍 {circuit.latitude.toFixed(4)}°, {circuit.longitude.toFixed(4)}°
+        </p>
       )}
     </div>
   );

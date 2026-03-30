@@ -1,7 +1,8 @@
 "use client";
 
-import { MapPin, Timer, Rotate3d, Calendar, Gauge, CornerDownRight, Zap } from "lucide-react";
+import { MapPin, Timer, Calendar, Gauge, CornerDownRight, Hash } from "lucide-react";
 import { CountryFlag } from "@/components/ui/CountryFlag";
+import { TrackLayout } from "@/components/circuits/TrackLayout";
 
 import type { CalendarRace } from "@/types/api";
 
@@ -44,7 +45,7 @@ export function NextGPPreview({ race }: NextGPPreviewProps) {
                 { icon: Calendar, label: "Fecha", value: raceDate.toLocaleDateString("es-AR", { day: "numeric", month: "short", year: "numeric" }) },
                 { icon: MapPin, label: "Ciudad", value: `${race.city}` },
                 { icon: Timer, label: "Hora", value: race.time ? new Date(`1970-01-01T${race.time}`).toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" }) : "TBD" },
-                { icon: Rotate3d, label: "Ronda", value: `${race.round} / 22` },
+                { icon: Hash, label: "Ronda", value: `${race.round} / 22` },
                 { icon: Gauge, label: "Longitud", value: "5.412 km" },
                 { icon: CornerDownRight, label: "Curvas", value: "19" },
               ].map((stat) => (
@@ -59,12 +60,11 @@ export function NextGPPreview({ race }: NextGPPreviewProps) {
             </div>
           </div>
 
-          {/* Right: Circuit placeholder */}
-          <div className="flex-shrink-0 w-full sm:w-48 h-44 rounded-xl bg-grid-card border border-white/[0.04] flex flex-col items-center justify-center gap-2">
-            <Zap size={28} className="text-grid-text-muted opacity-20" />
-            <p className="text-[10px] font-bold uppercase tracking-widest text-grid-text-muted">Circuit Layout</p>
-            <p className="text-[10px] text-grid-text-muted">Coming soon</p>
-          </div>
+          {/* Track SVG */}
+          <TrackLayout
+            circuitId={race.circuitId}
+            className="flex-shrink-0 w-full sm:w-48 h-44 rounded-xl bg-grid-card border border-white/[0.04] p-4"
+          />
         </div>
       </div>
     </div>

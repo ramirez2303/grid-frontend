@@ -1,26 +1,61 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-grid-bg: #0A0A0C;
+  --color-grid-surface: #111115;
+  --color-grid-card: #16161A;
+  --color-grid-border: rgba(255, 255, 255, 0.06);
+  --color-grid-text: #F0F0F2;
+  --color-grid-text-secondary: #8A8A95;
+  --color-grid-text-muted: #55555F;
+
+  --color-team-mclaren: #FF8000;
+  --color-team-mercedes: #27F4D2;
+  --color-team-redbull: #3671C6;
+  --color-team-ferrari: #E8002D;
+  --color-team-williams: #64C4FF;
+  --color-team-racingbulls: #6692FF;
+  --color-team-astonmartin: #229971;
+  --color-team-haas: #B6BABD;
+  --color-team-audi: #C0C0C0;
+  --color-team-alpine: #FF87BC;
+  --color-team-cadillac: #1A1A1A;
+
+  --font-display: var(--font-bebas-neue);
+  --font-body: var(--font-outfit);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-grid-bg);
+  color: var(--color-grid-text);
+  font-family: var(--font-body), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(255, 128, 0, 0.3);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-grid-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-grid-text-muted);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-grid-text-secondary);
 }

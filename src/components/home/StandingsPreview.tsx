@@ -40,20 +40,26 @@ export function StandingsPreview() {
         <div className="space-y-2">
           <h3 className="text-xs font-bold uppercase tracking-widest text-grid-text-muted mb-3">Pilotos</h3>
           {topDrivers.map((d) => (
-            <div key={d.driverId} className="group flex items-center gap-3 rounded-lg bg-grid-surface border border-white/[0.06] px-4 py-3 hover:border-white/10 transition-colors">
-              <span className="w-6 text-sm font-bold text-grid-text-muted" style={{ fontFamily: "var(--font-mono)" }}>
+            <div
+              key={d.driverId}
+              className="group flex items-center gap-3 rounded-lg bg-grid-surface border border-white/[0.06] px-4 py-3 transition-all hover:border-white/10"
+              style={{ ["--hover-color" as string]: `${d.teamColor}10` }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = `${d.teamColor}08`; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = ""; }}
+            >
+              <span className="w-8 text-xl font-bold text-grid-text-muted" style={{ fontFamily: "var(--font-display)" }}>
                 {d.position}
               </span>
-              <span className="h-full w-1 rounded-full self-stretch" style={{ background: d.teamColor }} />
+              <span className="w-1 self-stretch rounded-full" style={{ background: d.teamColor }} />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-grid-text truncate">{d.firstName} {d.lastName}</p>
                 <p className="text-xs text-grid-text-muted">{d.teamName}</p>
               </div>
               <div className="flex items-center gap-2">
-                <div className="hidden sm:block w-20 h-1.5 rounded-full bg-grid-card overflow-hidden">
-                  <div className="h-full rounded-full" style={{ width: `${(d.points / maxDriverPts) * 100}%`, background: d.teamColor }} />
+                <div className="hidden sm:block w-16 h-1.5 rounded-full bg-grid-card overflow-hidden">
+                  <div className="h-full rounded-full transition-all" style={{ width: `${(d.points / maxDriverPts) * 100}%`, background: d.teamColor }} />
                 </div>
-                <span className="text-sm font-bold text-grid-text tabular-nums" style={{ fontFamily: "var(--font-mono)" }}>
+                <span className="text-sm font-bold text-grid-text tabular-nums w-8 text-right" style={{ fontFamily: "var(--font-mono)" }}>
                   {d.points}
                 </span>
               </div>
@@ -65,20 +71,25 @@ export function StandingsPreview() {
         <div className="space-y-2">
           <h3 className="text-xs font-bold uppercase tracking-widest text-grid-text-muted mb-3">Constructores</h3>
           {topConstructors.map((c) => (
-            <div key={c.teamId} className="group flex items-center gap-3 rounded-lg bg-grid-surface border border-white/[0.06] px-4 py-3 hover:border-white/10 transition-colors">
-              <span className="w-6 text-sm font-bold text-grid-text-muted" style={{ fontFamily: "var(--font-mono)" }}>
+            <div
+              key={c.teamId}
+              className="group flex items-center gap-3 rounded-lg bg-grid-surface border border-white/[0.06] px-4 py-3 transition-all hover:border-white/10"
+              onMouseEnter={(e) => { e.currentTarget.style.background = `${c.color}08`; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = ""; }}
+            >
+              <span className="w-8 text-xl font-bold text-grid-text-muted" style={{ fontFamily: "var(--font-display)" }}>
                 {c.position}
               </span>
-              <span className="h-full w-1 rounded-full self-stretch" style={{ background: c.color }} />
+              <span className="w-1 self-stretch rounded-full" style={{ background: c.color }} />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-grid-text truncate">{c.name}</p>
                 <p className="text-xs text-grid-text-muted">{c.engine}</p>
               </div>
               <div className="flex items-center gap-2">
-                <div className="hidden sm:block w-20 h-1.5 rounded-full bg-grid-card overflow-hidden">
-                  <div className="h-full rounded-full" style={{ width: `${(c.points / maxTeamPts) * 100}%`, background: c.color }} />
+                <div className="hidden sm:block w-16 h-1.5 rounded-full bg-grid-card overflow-hidden">
+                  <div className="h-full rounded-full transition-all" style={{ width: `${(c.points / maxTeamPts) * 100}%`, background: c.color }} />
                 </div>
-                <span className="text-sm font-bold text-grid-text tabular-nums" style={{ fontFamily: "var(--font-mono)" }}>
+                <span className="text-sm font-bold text-grid-text tabular-nums w-8 text-right" style={{ fontFamily: "var(--font-mono)" }}>
                   {c.points}
                 </span>
               </div>

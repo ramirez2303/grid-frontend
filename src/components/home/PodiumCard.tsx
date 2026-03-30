@@ -9,11 +9,13 @@ interface PodiumCardProps {
   index: number;
 }
 
-const podiumHeights = ["h-44 sm:h-56", "h-36 sm:h-44", "h-32 sm:h-40"];
+const podiumHeights = ["h-48 sm:h-60", "h-36 sm:h-44", "h-32 sm:h-40"];
 const positionLabels = ["1ST", "2ND", "3RD"];
 const delays = [0.2, 0.1, 0.3];
 
 export function PodiumCard({ result, index }: PodiumCardProps) {
+  const isWinner = index === 0;
+
   return (
     <motion.div
       className="flex flex-col items-center"
@@ -38,11 +40,19 @@ export function PodiumCard({ result, index }: PodiumCardProps) {
 
       {/* Podium bar */}
       <div
-        className={`relative w-24 sm:w-32 ${podiumHeights[index]} rounded-t-lg flex flex-col items-center justify-start pt-4`}
-        style={{ background: `linear-gradient(to top, ${result.teamColor}20, ${result.teamColor}50)` }}
+        className={`relative w-24 sm:w-32 ${podiumHeights[index]} rounded-t-lg flex flex-col items-center justify-start pt-4 border-l border-r border-t border-white/[0.06]`}
+        style={{ background: `linear-gradient(to top, ${result.teamColor}15, ${result.teamColor}40)` }}
       >
+        {/* Winner glow */}
+        {isWinner && (
+          <div
+            className="absolute -inset-4 rounded-xl blur-2xl opacity-20 -z-10"
+            style={{ background: result.teamColor }}
+          />
+        )}
+
         <span
-          className="text-4xl sm:text-5xl font-bold"
+          className={`${isWinner ? "text-5xl sm:text-6xl" : "text-4xl sm:text-5xl"} font-bold`}
           style={{ fontFamily: "var(--font-display)", color: result.teamColor }}
         >
           {positionLabels[index]}
@@ -55,8 +65,8 @@ export function PodiumCard({ result, index }: PodiumCardProps) {
             Fastest Lap
           </span>
         )}
-        {/* Bottom accent line */}
-        <div className="absolute bottom-0 left-0 right-0 h-1" style={{ background: result.teamColor }} />
+        {/* Bottom accent bar — thick */}
+        <div className="absolute bottom-0 left-0 right-0 h-1.5 rounded-b-sm" style={{ background: result.teamColor }} />
       </div>
     </motion.div>
   );

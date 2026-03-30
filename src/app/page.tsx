@@ -20,7 +20,7 @@ export default function Home() {
     <div className="flex flex-col">
       <Hero nextRace={nextRace} />
 
-      <div className="mx-auto w-full max-w-7xl space-y-16 px-6 py-12">
+      <div className="mx-auto w-full max-w-7xl space-y-12 px-6 py-12">
         <SectionReveal>
           <LastRaceResult />
         </SectionReveal>

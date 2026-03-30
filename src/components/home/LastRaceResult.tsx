@@ -38,25 +38,25 @@ export function LastRaceResult() {
       </div>
 
       {/* Podium */}
-      <div className="flex items-end justify-center gap-2 sm:gap-6 mb-6">
+      <div className="flex items-end justify-center gap-2 sm:gap-6 mb-8">
         {podium[1] && <PodiumCard result={podium[1]} index={1} />}
         {podium[0] && <PodiumCard result={podium[0]} index={0} />}
         {podium[2] && <PodiumCard result={podium[2]} index={2} />}
       </div>
 
-      {/* Rest of results P4-P10 */}
+      {/* Rest P4-P10 */}
       <div className="flex flex-wrap justify-center gap-2">
         {rest.map((r) => (
           <div
             key={r.driverId}
-            className="flex items-center gap-2 rounded-lg bg-grid-surface border border-white/[0.06] px-3 py-2"
+            className="group flex items-center gap-2 rounded-lg bg-grid-surface border border-white/[0.06] px-3 py-2 hover:border-white/10 hover:bg-grid-card transition-all cursor-default"
           >
             <span className="text-xs font-bold text-grid-text-muted" style={{ fontFamily: "var(--font-mono)" }}>
               P{r.position}
             </span>
             <span className="h-3 w-1 rounded-full" style={{ background: r.teamColor }} />
             <span className="text-sm font-medium text-grid-text">{r.abbreviation}</span>
-            <span className="text-xs text-grid-text-muted" style={{ fontFamily: "var(--font-mono)" }}>
+            <span className="text-xs text-grid-text-muted group-hover:text-grid-text-secondary transition-colors" style={{ fontFamily: "var(--font-mono)" }}>
               {r.time ?? r.status}
             </span>
           </div>

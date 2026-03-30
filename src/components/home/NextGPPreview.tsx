@@ -1,6 +1,6 @@
 "use client";
 
-import { MapPin, Timer, Rotate3d, Calendar } from "lucide-react";
+import { MapPin, Timer, Rotate3d, Calendar, Gauge, CornerDownRight, Zap } from "lucide-react";
 import { getCountryFlag } from "@/lib/countryFlags";
 
 import type { CalendarRace } from "@/types/api";
@@ -9,37 +9,29 @@ interface NextGPPreviewProps {
   race: CalendarRace | null;
 }
 
-interface CircuitStat {
-  icon: typeof MapPin;
-  label: string;
-  value: string;
-}
-
 export function NextGPPreview({ race }: NextGPPreviewProps) {
   if (!race) return null;
 
   const flag = getCountryFlag(race.country);
   const raceDate = new Date(race.date);
 
-  const stats: CircuitStat[] = [
-    { icon: Calendar, label: "Fecha", value: raceDate.toLocaleDateString("es-AR", { day: "numeric", month: "short", year: "numeric" }) },
-    { icon: MapPin, label: "Ciudad", value: `${race.city}, ${race.country}` },
-    { icon: Timer, label: "Hora", value: race.time ? new Date(`1970-01-01T${race.time}`).toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" }) : "TBD" },
-    { icon: Rotate3d, label: "Ronda", value: `${race.round} de 22` },
-  ];
-
   return (
     <div className="relative overflow-hidden rounded-2xl bg-grid-surface border border-white/[0.06]">
-      {/* Top accent */}
-      <div className="h-1 bg-gradient-to-r from-team-mclaren via-team-ferrari to-team-mercedes" />
+      {/* Top gradient — broadcast "coming up" feel */}
+      <div className="h-1.5 bg-gradient-to-r from-team-mercedes via-team-mclaren to-team-ferrari" />
 
       <div className="p-6 sm:p-8">
+        {/* Coming up label */}
+        <div className="flex items-center gap-2 mb-4">
+          <div className="h-2 w-2 rounded-full bg-team-mercedes animate-pulse" />
+          <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-team-mercedes">
+            Coming Up Next
+          </span>
+        </div>
+
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
           {/* Left: Info */}
           <div className="flex-1">
-            <p className="text-xs font-bold uppercase tracking-widest text-grid-text-muted mb-2">
-              Próximo Gran Premio
-            </p>
             <h3
               className="text-3xl sm:text-4xl tracking-wider text-grid-text mb-1"
               style={{ fontFamily: "var(--font-display)" }}
@@ -48,13 +40,20 @@ export function NextGPPreview({ race }: NextGPPreviewProps) {
             </h3>
             <p className="text-sm text-grid-text-secondary mb-6">{race.circuitName}</p>
 
-            <div className="grid grid-cols-2 gap-4">
-              {stats.map((stat) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {[
+                { icon: Calendar, label: "Fecha", value: raceDate.toLocaleDateString("es-AR", { day: "numeric", month: "short", year: "numeric" }) },
+                { icon: MapPin, label: "Ciudad", value: `${race.city}` },
+                { icon: Timer, label: "Hora", value: race.time ? new Date(`1970-01-01T${race.time}`).toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" }) : "TBD" },
+                { icon: Rotate3d, label: "Ronda", value: `${race.round} / 22` },
+                { icon: Gauge, label: "Longitud", value: "5.412 km" },
+                { icon: CornerDownRight, label: "Curvas", value: "19" },
+              ].map((stat) => (
                 <div key={stat.label} className="flex items-start gap-2">
                   <stat.icon size={14} className="mt-0.5 text-grid-text-muted" />
                   <div>
                     <p className="text-[10px] uppercase tracking-wider text-grid-text-muted">{stat.label}</p>
-                    <p className="text-sm text-grid-text">{stat.value}</p>
+                    <p className="text-sm font-medium text-grid-text">{stat.value}</p>
                   </div>
                 </div>
               ))}
@@ -62,11 +61,10 @@ export function NextGPPreview({ race }: NextGPPreviewProps) {
           </div>
 
           {/* Right: Circuit placeholder */}
-          <div className="flex-shrink-0 w-full sm:w-48 h-40 rounded-xl bg-grid-card border border-white/[0.04] flex items-center justify-center">
-            <div className="text-center text-grid-text-muted">
-              <Rotate3d size={32} className="mx-auto mb-2 opacity-30" />
-              <p className="text-xs">Trazado SVG</p>
-            </div>
+          <div className="flex-shrink-0 w-full sm:w-48 h-44 rounded-xl bg-grid-card border border-white/[0.04] flex flex-col items-center justify-center gap-2">
+            <Zap size={28} className="text-grid-text-muted opacity-20" />
+            <p className="text-[10px] font-bold uppercase tracking-widest text-grid-text-muted">Circuit Layout</p>
+            <p className="text-[10px] text-grid-text-muted">Coming soon</p>
           </div>
         </div>
       </div>

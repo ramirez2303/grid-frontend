@@ -39,12 +39,9 @@ export function DriverSeasonStats({ standing, results, driverId, teamColor }: Dr
       </h2>
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
         {stats.map((stat) => (
-          <div
-            key={stat.label}
-            className="rounded-xl bg-grid-surface border border-white/[0.06] p-4 text-center"
-          >
-            <stat.icon size={16} className="mx-auto mb-2" style={{ color: teamColor }} />
-            <p className="text-2xl font-bold text-grid-text" style={{ fontFamily: "var(--font-mono)" }}>
+          <div key={stat.label} className="rounded-xl bg-grid-surface border border-white/[0.06] p-5 text-center">
+            <stat.icon size={20} className="mx-auto mb-3" style={{ color: teamColor }} />
+            <p className="text-4xl font-bold text-grid-text" style={{ fontFamily: "var(--font-display)" }}>
               {stat.value}
             </p>
             <p className="text-[10px] uppercase tracking-wider text-grid-text-muted mt-1">{stat.label}</p>

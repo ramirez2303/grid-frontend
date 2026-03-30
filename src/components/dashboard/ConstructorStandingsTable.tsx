@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { TeamBadge } from "@/components/ui/TeamBadge";
 
 import type { ConstructorStanding } from "@/types/api";
 
@@ -27,16 +28,20 @@ export function ConstructorStandingsTable({ standings }: ConstructorStandingsTab
             return (
               <tr
                 key={team.teamId}
-                className="border-b border-white/[0.04] hover:bg-white/[0.02] transition-colors"
+                className="border-b border-white/[0.04] transition-colors hover:bg-white/[0.02]"
+                style={{ ["--row-color" as string]: team.color }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = `${team.color}08`; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = ""; }}
               >
                 <td className="py-3 px-3">
-                  <span className="text-lg font-bold text-grid-text-muted" style={{ fontFamily: "var(--font-display)" }}>
+                  <span className="text-xl font-bold text-grid-text-muted" style={{ fontFamily: "var(--font-display)" }}>
                     {team.position}
                   </span>
                 </td>
                 <td className="py-3 px-3">
                   <Link href={`/equipos/${team.teamId}`} className="flex items-center gap-3 group">
                     <span className="h-8 w-1.5 rounded-full" style={{ background: team.color }} />
+                    <TeamBadge teamId={team.teamId} teamName={team.name} color={team.color} size="sm" />
                     <div>
                       <p className="font-medium text-grid-text group-hover:text-white transition-colors">{team.name}</p>
                       <p className="text-xs text-grid-text-muted">{team.engine}</p>

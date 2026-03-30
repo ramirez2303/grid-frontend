@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { DriverImage } from "@/components/ui/DriverImage";
 
 import type { DriverStanding } from "@/types/api";
 
@@ -25,16 +26,19 @@ export function DriverStandingsTable({ standings }: DriverStandingsTableProps) {
           {standings.map((d) => (
             <tr
               key={d.driverId}
-              className="border-b border-white/[0.04] hover:bg-white/[0.02] transition-colors"
+              className="border-b border-white/[0.04] transition-colors"
+              onMouseEnter={(e) => { e.currentTarget.style.background = `${d.teamColor}08`; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = ""; }}
             >
               <td className="py-3 px-3">
-                <span className="text-lg font-bold text-grid-text-muted" style={{ fontFamily: "var(--font-display)" }}>
+                <span className="text-xl font-bold text-grid-text-muted" style={{ fontFamily: "var(--font-display)" }}>
                   {d.position}
                 </span>
               </td>
               <td className="py-3 px-3">
                 <Link href={`/pilotos/${d.driverId}`} className="flex items-center gap-3 group">
-                  <span className="h-8 w-1.5 rounded-full" style={{ background: d.teamColor }} />
+                  <DriverImage firstName={d.firstName} lastName={d.lastName} teamColor={d.teamColor} size="sm" />
+                  <span className="h-8 w-1 rounded-full" style={{ background: d.teamColor }} />
                   <div>
                     <p className="font-medium text-grid-text group-hover:text-white transition-colors">
                       {d.firstName} <span className="font-bold">{d.lastName}</span>

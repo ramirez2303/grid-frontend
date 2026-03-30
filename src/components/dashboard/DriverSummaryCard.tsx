@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { DriverImage } from "@/components/ui/DriverImage";
 
 import type { TeamDriverSummary, DriverStanding } from "@/types/api";
 
@@ -21,35 +22,37 @@ export function DriverSummaryCard({ driver, standing, teamColor, index }: Driver
     >
       <Link
         href={`/pilotos/${driver.id}`}
-        className="group block overflow-hidden rounded-xl bg-grid-surface border border-white/[0.06] hover:border-white/10 transition-all"
+        className="group block overflow-hidden rounded-xl border border-white/[0.06] hover:border-white/10 transition-all"
+        style={{ background: `linear-gradient(135deg, ${teamColor}08, var(--color-grid-surface))` }}
       >
         <div className="h-1" style={{ background: teamColor }} />
         <div className="p-5">
-          <div className="flex items-start justify-between mb-3">
-            <div>
+          <div className="flex items-center gap-4 mb-4">
+            <DriverImage firstName={driver.firstName} lastName={driver.lastName} teamColor={teamColor} size="lg" />
+            <div className="flex-1">
               <p className="text-xs text-grid-text-muted">{driver.nationality}</p>
               <p className="text-xl font-bold text-grid-text group-hover:text-white transition-colors" style={{ fontFamily: "var(--font-display)" }}>
                 {driver.firstName} {driver.lastName}
               </p>
             </div>
-            <span className="text-3xl font-bold" style={{ fontFamily: "var(--font-display)", color: teamColor }}>
+            <span className="text-4xl font-bold opacity-30" style={{ fontFamily: "var(--font-display)", color: teamColor }}>
               {driver.number}
             </span>
           </div>
 
           {standing && (
-            <div className="flex items-center gap-4 text-sm">
+            <div className="flex items-center gap-5 text-sm">
               <div>
-                <p className="text-xs text-grid-text-muted">Posición</p>
-                <p className="font-bold text-grid-text" style={{ fontFamily: "var(--font-mono)" }}>P{standing.position}</p>
+                <p className="text-[10px] uppercase tracking-wider text-grid-text-muted">Posición</p>
+                <p className="text-lg font-bold" style={{ fontFamily: "var(--font-display)", color: teamColor }}>P{standing.position}</p>
               </div>
               <div>
-                <p className="text-xs text-grid-text-muted">Puntos</p>
-                <p className="font-bold text-grid-text" style={{ fontFamily: "var(--font-mono)" }}>{standing.points}</p>
+                <p className="text-[10px] uppercase tracking-wider text-grid-text-muted">Puntos</p>
+                <p className="text-lg font-bold text-grid-text" style={{ fontFamily: "var(--font-mono)" }}>{standing.points}</p>
               </div>
               <div>
-                <p className="text-xs text-grid-text-muted">Wins</p>
-                <p className="font-bold text-grid-text" style={{ fontFamily: "var(--font-mono)" }}>{standing.wins}</p>
+                <p className="text-[10px] uppercase tracking-wider text-grid-text-muted">Victorias</p>
+                <p className="text-lg font-bold text-grid-text" style={{ fontFamily: "var(--font-mono)" }}>{standing.wins}</p>
               </div>
             </div>
           )}

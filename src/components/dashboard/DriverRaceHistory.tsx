@@ -9,9 +9,10 @@ interface DriverRaceHistoryProps {
   teamColor: string;
 }
 
+const positionColors: Record<number, string> = { 1: "#FFD700", 2: "#C0C0C0", 3: "#CD7F32" };
+
 export function DriverRaceHistory({ calendar, results, driverId, teamColor }: DriverRaceHistoryProps) {
   const completedRaces = calendar.filter((r) => r.hasResults);
-
   if (completedRaces.length === 0) return null;
 
   return (
@@ -35,25 +36,24 @@ export function DriverRaceHistory({ calendar, results, driverId, teamColor }: Dr
               const raceResult = results.find((r) => r.round === race.round);
               const dResult = raceResult?.results.find((r) => r.driverId === driverId);
               const pos = dResult?.position;
-              const isPodium = pos !== null && pos !== undefined && pos <= 3;
+              const medalColor = pos ? positionColors[pos] : undefined;
 
               return (
                 <tr key={race.round} className="border-b border-white/[0.04]">
                   <td className="py-2.5 px-3 text-grid-text-muted" style={{ fontFamily: "var(--font-mono)" }}>
                     R{race.round}
                   </td>
-                  <td className="py-2.5 px-3 text-grid-text">
-                    {race.name.replace(" Grand Prix", "")}
-                  </td>
+                  <td className="py-2.5 px-3 text-grid-text">{race.name.replace(" Grand Prix", "")}</td>
                   <td className="py-2.5 px-3 text-center text-grid-text-secondary" style={{ fontFamily: "var(--font-mono)" }}>
                     {dResult?.gridPosition ?? "—"}
                   </td>
                   <td className="py-2.5 px-3 text-center">
                     <span
-                      className={`inline-block w-8 rounded text-center text-xs font-bold py-0.5 ${
-                        isPodium ? "text-white" : "text-grid-text-secondary"
-                      }`}
-                      style={isPodium ? { background: teamColor } : undefined}
+                      className="inline-block w-9 rounded text-center text-xs font-bold py-1"
+                      style={{
+                        background: medalColor ?? (pos ? `${teamColor}20` : "transparent"),
+                        color: medalColor ? "#000" : (pos ? "var(--color-grid-text)" : "var(--color-grid-text-muted)"),
+                      }}
                     >
                       {pos ? `P${pos}` : "DNF"}
                     </span>

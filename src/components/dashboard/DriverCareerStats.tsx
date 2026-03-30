@@ -10,11 +10,11 @@ interface DriverCareerStatsProps {
 
 export function DriverCareerStats({ driver }: DriverCareerStatsProps) {
   const stats = [
-    { icon: Trophy, label: "Campeonatos", value: driver.championships },
-    { icon: Flag, label: "Victorias", value: driver.wins },
-    { icon: Award, label: "Podios", value: driver.podiums },
-    { icon: Timer, label: "Poles", value: driver.poles },
-    { icon: Calendar, label: "Primera temporada", value: driver.firstSeason ?? "—" },
+    { icon: Trophy, label: "Campeonatos", value: driver.championships, color: "#FFD700" },
+    { icon: Flag, label: "Victorias", value: driver.wins, color: driver.team.colorPrimary },
+    { icon: Award, label: "Podios", value: driver.podiums, color: "#CD7F32" },
+    { icon: Timer, label: "Poles", value: driver.poles, color: "#A855F7" },
+    { icon: Calendar, label: "Primera temporada", value: driver.firstSeason ?? "—", color: "#8A8A95" },
   ];
 
   return (
@@ -24,12 +24,9 @@ export function DriverCareerStats({ driver }: DriverCareerStatsProps) {
       </h2>
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
         {stats.map((stat) => (
-          <div
-            key={stat.label}
-            className="rounded-xl bg-grid-surface border border-white/[0.06] p-4 text-center"
-          >
-            <stat.icon size={16} className="mx-auto mb-2 text-grid-text-muted" />
-            <p className="text-2xl font-bold text-grid-text" style={{ fontFamily: "var(--font-mono)" }}>
+          <div key={stat.label} className="rounded-xl bg-grid-surface border border-white/[0.06] p-5 text-center">
+            <stat.icon size={20} className="mx-auto mb-3" style={{ color: stat.color }} />
+            <p className="text-4xl font-bold text-grid-text" style={{ fontFamily: "var(--font-display)" }}>
               {stat.value}
             </p>
             <p className="text-[10px] uppercase tracking-wider text-grid-text-muted mt-1">{stat.label}</p>

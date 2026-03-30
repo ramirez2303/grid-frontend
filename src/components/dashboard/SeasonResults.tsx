@@ -9,6 +9,8 @@ interface SeasonResultsProps {
   teamColor: string;
 }
 
+const positionColors: Record<number, string> = { 1: "#FFD700", 2: "#C0C0C0", 3: "#CD7F32" };
+
 export function SeasonResults({ calendar, results, driverIds, teamColor }: SeasonResultsProps) {
   const completedRaces = calendar.filter((r) => r.hasResults);
 
@@ -40,16 +42,17 @@ export function SeasonResults({ calendar, results, driverIds, teamColor }: Seaso
                   {driverIds.map((driverId) => {
                     const dResult = raceResult?.results.find((r) => r.driverId === driverId);
                     const pos = dResult?.position;
-                    const isPodium = pos !== null && pos !== undefined && pos <= 3;
+                    const medalColor = pos ? positionColors[pos] : undefined;
                     return (
                       <td key={driverId} className="py-2.5 px-3 text-center">
                         <span
-                          className={`inline-block w-8 rounded text-center text-xs font-bold py-0.5 ${
-                            isPodium ? "text-white" : "text-grid-text-secondary"
-                          }`}
-                          style={isPodium ? { background: teamColor } : undefined}
+                          className="inline-block w-9 rounded text-center text-xs font-bold py-1"
+                          style={{
+                            background: medalColor ?? (pos ? `${teamColor}20` : "transparent"),
+                            color: medalColor ? "#000" : (pos ? "var(--color-grid-text)" : "var(--color-grid-text-muted)"),
+                          }}
                         >
-                          {pos ? `P${pos}` : dResult?.status === "Finished" ? "—" : "DNF"}
+                          {pos ? `P${pos}` : dResult ? "DNF" : "—"}
                         </span>
                       </td>
                     );

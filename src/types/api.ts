@@ -55,6 +55,10 @@ export interface DriverStanding {
   nationality: string;
   points: number;
   wins: number;
+  podiums: number;
+  poles: number;
+  fastestLaps: number;
+  dnfs: number;
   teamId: string;
   teamName: string;
   teamColor: string;
@@ -68,6 +72,7 @@ export interface ConstructorStanding {
   color: string;
   points: number;
   wins: number;
+  podiums: number;
   engine: string;
 }
 

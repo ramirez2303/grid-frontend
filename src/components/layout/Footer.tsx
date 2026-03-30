@@ -2,16 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-
-const sections = [
-  { name: "Equipos", href: "/equipos" },
-  { name: "Circuitos", href: "/circuitos" },
-  { name: "Live", href: "/live" },
-  { name: "3D Lab", href: "/lab" },
-  { name: "Noticias", href: "/noticias" },
-  { name: "Curiosidades", href: "/curiosidades" },
-  { name: "Técnico", href: "/tecnico" },
-];
+import { navLinks } from "@/data/navigation";
 
 export function Footer() {
   return (
@@ -39,13 +30,13 @@ export function Footer() {
 
           {/* Nav links */}
           <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-            {sections.map((s) => (
+            {navLinks.map((link) => (
               <Link
-                key={s.href}
-                href={s.href}
+                key={link.href}
+                href={link.href}
                 className="text-sm text-grid-text-secondary hover:text-grid-text transition-colors duration-200"
               >
-                {s.name}
+                {link.name}
               </Link>
             ))}
           </nav>

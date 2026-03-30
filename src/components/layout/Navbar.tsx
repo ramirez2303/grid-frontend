@@ -5,16 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-
-const navLinks = [
-  { name: "Equipos", href: "/equipos" },
-  { name: "Circuitos", href: "/circuitos" },
-  { name: "Live", href: "/live" },
-  { name: "3D Lab", href: "/lab" },
-  { name: "Noticias", href: "/noticias" },
-  { name: "Curiosidades", href: "/curiosidades" },
-  { name: "Técnico", href: "/tecnico" },
-];
+import { navLinks } from "@/data/navigation";
+import { SeasonBadge } from "@/components/ui/SeasonBadge";
+import { MobileMenu } from "./MobileMenu";
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -27,7 +20,6 @@ export function Navbar() {
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
-      {/* Backdrop blur layer */}
       <div className="absolute inset-0 bg-grid-bg/80 backdrop-blur-xl border-b border-white/[0.06]" />
 
       <nav className="relative mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
@@ -42,7 +34,6 @@ export function Navbar() {
           <span className="hidden text-[10px] font-medium uppercase tracking-widest text-grid-text-muted sm:block">
             F1 Hub
           </span>
-          {/* Accent underline on hover */}
           <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-team-mclaren transition-all duration-300 group-hover:w-full" />
         </Link>
 
@@ -79,15 +70,8 @@ export function Navbar() {
           })}
         </div>
 
-        {/* Live indicator dot (desktop) */}
-        <div className="hidden items-center gap-2 md:flex">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
-          </span>
-          <span className="text-xs font-medium uppercase tracking-wider text-grid-text-muted">
-            2026
-          </span>
+        <div className="hidden md:flex">
+          <SeasonBadge />
         </div>
 
         {/* Mobile hamburger */}
@@ -122,62 +106,11 @@ export function Navbar() {
         </button>
       </nav>
 
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            className="fixed inset-0 top-16 z-40 bg-grid-bg/95 backdrop-blur-2xl md:hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-          >
-            <nav className="flex flex-col px-6 pt-8">
-              {navLinks.map((link, i) => {
-                const isActive = pathname === link.href;
-                return (
-                  <motion.div
-                    key={link.href}
-                    initial={{ opacity: 0, x: -30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -30 }}
-                    transition={{ duration: 0.3, delay: i * 0.05 }}
-                  >
-                    <Link
-                      href={link.href}
-                      onClick={() => setMobileOpen(false)}
-                      className={`flex items-center gap-3 border-b border-white/[0.04] py-4 text-lg font-medium transition-colors ${
-                        isActive ? "text-grid-text" : "text-grid-text-secondary"
-                      }`}
-                    >
-                      {isActive && (
-                        <span className="h-4 w-1 rounded-full bg-team-mclaren" />
-                      )}
-                      {link.name}
-                    </Link>
-                  </motion.div>
-                );
-              })}
-
-              {/* Season badge in mobile */}
-              <motion.div
-                className="mt-8 flex items-center gap-2"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-              >
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
-                </span>
-                <span className="text-sm font-medium uppercase tracking-wider text-grid-text-muted">
-                  Temporada 2026
-                </span>
-              </motion.div>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <MobileMenu
+        isOpen={mobileOpen}
+        pathname={pathname}
+        onClose={() => setMobileOpen(false)}
+      />
     </motion.header>
   );
 }

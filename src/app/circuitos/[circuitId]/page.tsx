@@ -46,7 +46,7 @@ export default function CircuitDetailPage({ params }: PageProps) {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-10 space-y-10">
-      <CircuitHero circuit={circuit} race={race} />
+      <CircuitHero circuit={circuit} race={race} winnerColor={raceResult?.results[0]?.teamColor} />
 
       <SectionReveal>
         <CircuitTechnical circuit={circuit} />

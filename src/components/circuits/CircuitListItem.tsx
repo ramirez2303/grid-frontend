@@ -19,7 +19,7 @@ export function CircuitListItem({ race, isSelected, onSelect }: CircuitListItemP
     <div
       className={`flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all border ${
         isSelected
-          ? "bg-white/[0.04] border-team-mclaren/30"
+          ? "bg-white/[0.04] border-l-2 border-l-team-mclaren border-t-0 border-r-0 border-b-0"
           : "border-transparent hover:bg-white/[0.02]"
       }`}
       onClick={() => onSelect(race.circuitId)}
@@ -34,26 +34,20 @@ export function CircuitListItem({ race, isSelected, onSelect }: CircuitListItemP
       </div>
 
       <div className="flex items-center gap-2 flex-shrink-0">
-        <span className="text-xs text-grid-text-muted" style={{ fontFamily: "var(--font-mono)" }}>
-          {dateStr}
-        </span>
+        <span className="text-xs text-grid-text-muted" style={{ fontFamily: "var(--font-mono)" }}>{dateStr}</span>
         {race.hasResults ? (
-          <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-team-mercedes/20 text-team-mercedes">
-            OK
-          </span>
+          <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-team-mercedes/20 text-team-mercedes">OK</span>
         ) : (
-          <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-white/[0.06] text-grid-text-muted">
-            R{race.round}
-          </span>
+          <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-white/[0.06] text-grid-text-muted">R{race.round}</span>
         )}
       </div>
 
       <Link
         href={`/circuitos/${race.circuitId}`}
-        className="text-xs text-grid-text-muted hover:text-grid-text transition-colors"
+        className="text-[10px] font-medium px-2 py-1 rounded bg-white/[0.04] text-grid-text-muted hover:text-grid-text hover:bg-white/[0.08] transition-all"
         onClick={(e) => e.stopPropagation()}
       >
-        →
+        Detalle
       </Link>
     </div>
   );

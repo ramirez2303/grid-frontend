@@ -1,10 +1,11 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { GlobeScene } from "./GlobeScene";
 
+import type { Topology } from "topojson-specification";
 import type { CalendarRace, CircuitListItem } from "@/types/api";
 
 interface GlobeViewProps {
@@ -15,21 +16,23 @@ interface GlobeViewProps {
 }
 
 export function GlobeView({ circuits, calendar, selectedId, onSelectCircuit }: GlobeViewProps) {
-  const completedIds = new Set(calendar.filter((r) => r.hasResults).map((r) => r.circuitId));
+  const [topoData, setTopoData] = useState<Topology | null>(null);
 
+  useEffect(() => {
+    fetch("/geo/world-110m.json")
+      .then((r) => r.json() as Promise<Topology>)
+      .then(setTopoData)
+      .catch(() => null);
+  }, []);
+
+  const completedIds = new Set(calendar.filter((r) => r.hasResults).map((r) => r.circuitId));
   const points = circuits
     .filter((c) => c.latitude != null && c.longitude != null)
-    .map((c) => ({
-      id: c.id,
-      lat: c.latitude!,
-      lng: c.longitude!,
-      completed: completedIds.has(c.id),
-    }));
+    .map((c) => ({ id: c.id, lat: c.latitude!, lng: c.longitude!, completed: completedIds.has(c.id) }));
 
   const selected = circuits.find((c) => c.id === selectedId);
   const targetLatLng = selected?.latitude != null && selected?.longitude != null
-    ? { lat: selected.latitude, lng: selected.longitude }
-    : null;
+    ? { lat: selected.latitude, lng: selected.longitude } : null;
 
   return (
     <div className="relative w-full aspect-square max-h-[500px] rounded-2xl bg-grid-surface border border-white/[0.06] overflow-hidden">
@@ -47,15 +50,16 @@ export function GlobeView({ circuits, calendar, selectedId, onSelectCircuit }: G
             selectedId={selectedId}
             targetLatLng={targetLatLng}
             onPointClick={onSelectCircuit}
+            topoData={topoData}
           />
           <OrbitControls enableZoom={false} enablePan={false} rotateSpeed={0.5} />
         </Canvas>
       </Suspense>
 
-      {/* Legend */}
       <div className="absolute bottom-3 left-3 flex items-center gap-4 text-[10px] text-grid-text-muted">
         <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-team-mercedes" /> Corrida</span>
-        <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-grid-text-muted" /> Próxima</span>
+        <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-grid-text-secondary" /> Próxima</span>
+        <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-team-mclaren" /> Seleccionado</span>
       </div>
     </div>
   );

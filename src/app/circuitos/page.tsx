@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import { AnimatePresence } from "framer-motion";
 import { useApi } from "@/hooks/useApi";
 import { getCalendar, getCircuits } from "@/lib/api";
 import { CircuitList } from "@/components/circuits/CircuitList";
-import { SeasonTimeline } from "@/components/circuits/SeasonTimeline";
-import { SectionReveal } from "@/components/ui/SectionReveal";
+import { CircuitDetailPanel } from "@/components/circuits/CircuitDetailPanel";
+import { CircuitTooltip } from "@/components/circuits/CircuitTooltip";
 
 const GlobeView = dynamic(
   () => import("@/components/circuits/GlobeView").then((m) => ({ default: m.GlobeView })),
@@ -23,6 +24,7 @@ export default function CircuitosPage() {
   const { data: circuits, loading: cirLoading } = useApi(getCircuits);
 
   const loading = calLoading || cirLoading;
+  const selectedRace = calendar?.find((r) => r.circuitId === selectedId) ?? null;
 
   if (loading) {
     return (
@@ -34,7 +36,6 @@ export default function CircuitosPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">
-      {/* Header */}
       <div className="mb-8">
         <h1 className="text-4xl sm:text-6xl tracking-wider text-grid-text mb-2" style={{ fontFamily: "var(--font-display)" }}>
           CIRCUITOS 2026
@@ -42,25 +43,29 @@ export default function CircuitosPage() {
         <p className="text-sm text-grid-text-muted">22 Grandes Premios alrededor del mundo</p>
       </div>
 
-      {/* Globe + List layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <GlobeView
-          circuits={circuits ?? []}
-          calendar={calendar ?? []}
-          selectedId={selectedId}
-          onSelectCircuit={setSelectedId}
-        />
-        <CircuitList
-          calendar={calendar ?? []}
-          selectedId={selectedId}
-          onSelect={setSelectedId}
-        />
+      {/* Globe + List */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div className="relative">
+          <GlobeView
+            circuits={circuits ?? []}
+            calendar={calendar ?? []}
+            selectedId={selectedId}
+            onSelectCircuit={setSelectedId}
+          />
+          {/* Tooltip overlay */}
+          {selectedRace && (
+            <div className="absolute top-3 right-3 z-10">
+              <AnimatePresence>
+                <CircuitTooltip race={selectedRace} />
+              </AnimatePresence>
+            </div>
+          )}
+        </div>
+        <CircuitList calendar={calendar ?? []} selectedId={selectedId} onSelect={setSelectedId} />
       </div>
 
-      {/* Timeline */}
-      <SectionReveal>
-        <SeasonTimeline calendar={calendar ?? []} />
-      </SectionReveal>
+      {/* Detail panel (replaces timeline) */}
+      <CircuitDetailPanel race={selectedRace} />
     </div>
   );
 }

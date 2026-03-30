@@ -1,17 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Rotate3d } from "lucide-react";
 import { CountryFlag } from "@/components/ui/CountryFlag";
+import { TrackLayout } from "./TrackLayout";
 
 import type { CircuitDetail, CalendarRace } from "@/types/api";
 
 interface CircuitHeroProps {
   circuit: CircuitDetail;
   race: CalendarRace | undefined;
+  winnerColor?: string;
 }
 
-export function CircuitHero({ circuit, race }: CircuitHeroProps) {
+export function CircuitHero({ circuit, race, winnerColor }: CircuitHeroProps) {
   return (
     <motion.div
       className="relative overflow-hidden rounded-2xl bg-grid-surface border border-white/[0.06]"
@@ -39,12 +40,11 @@ export function CircuitHero({ circuit, race }: CircuitHeroProps) {
             <p className="text-xs text-grid-text-muted mt-1">{circuit.city}, {circuit.country}</p>
           </div>
 
-          {/* SVG placeholder */}
-          <div className="flex-shrink-0 w-full sm:w-56 h-44 rounded-xl bg-grid-card border border-white/[0.04] flex flex-col items-center justify-center gap-2">
-            <Rotate3d size={32} className="text-grid-text-muted opacity-20" />
-            <p className="text-[10px] font-bold uppercase tracking-widest text-grid-text-muted">Trazado</p>
-            <p className="text-xs text-grid-text-muted">{circuit.type ?? "Permanente"}</p>
-          </div>
+          <TrackLayout
+            circuitId={circuit.id}
+            color={winnerColor ?? "#F0F0F2"}
+            className="flex-shrink-0 w-full sm:w-56 h-44 rounded-xl bg-grid-card border border-white/[0.04] p-4"
+          />
         </div>
       </div>
     </motion.div>

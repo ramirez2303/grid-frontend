@@ -5,6 +5,7 @@ import Image from "next/image";
 import { getDriverImageUrl } from "@/lib/f1Media";
 
 interface DriverImageProps {
+  driverId: string;
   firstName: string;
   lastName: string;
   teamColor: string;
@@ -14,15 +15,15 @@ interface DriverImageProps {
 
 const sizes = { sm: 32, md: 48, lg: 80, xl: 120 };
 
-export function DriverImage({ firstName, lastName, teamColor, size = "md", className = "" }: DriverImageProps) {
+export function DriverImage({ driverId, firstName, lastName, teamColor, size = "md", className = "" }: DriverImageProps) {
   const [failed, setFailed] = useState(false);
   const px = sizes[size];
-  const initials = `${firstName[0]}${lastName[0]}`;
+  const url = getDriverImageUrl(driverId, px * 2);
 
-  if (failed) {
+  if (failed || !url) {
     return (
       <div
-        className={`flex items-center justify-center rounded-full font-bold text-white ${className}`}
+        className={`flex items-center justify-center rounded-full font-bold text-white flex-shrink-0 ${className}`}
         style={{
           width: px,
           height: px,
@@ -31,18 +32,18 @@ export function DriverImage({ firstName, lastName, teamColor, size = "md", class
           fontFamily: "var(--font-display)",
         }}
       >
-        {initials}
+        {firstName[0]}{lastName[0]}
       </div>
     );
   }
 
   return (
     <Image
-      src={getDriverImageUrl(firstName, lastName)}
+      src={url}
       alt={`${firstName} ${lastName}`}
       width={px}
       height={px}
-      className={`rounded-full object-cover bg-grid-card ${className}`}
+      className={`rounded-full object-cover bg-grid-card flex-shrink-0 ${className}`}
       style={{ border: `2px solid ${teamColor}40` }}
       onError={() => setFailed(true)}
       unoptimized

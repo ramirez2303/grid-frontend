@@ -7,6 +7,11 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "media.formula1.com",
+        pathname: "/image/upload/**",
+      },
+      {
+        protocol: "https",
+        hostname: "flagcdn.com",
         pathname: "/**",
       },
     ],

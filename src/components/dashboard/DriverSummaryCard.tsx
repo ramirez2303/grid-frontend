@@ -28,7 +28,7 @@ export function DriverSummaryCard({ driver, standing, teamColor, index }: Driver
         <div className="h-1" style={{ background: teamColor }} />
         <div className="p-5">
           <div className="flex items-center gap-4 mb-4">
-            <DriverImage firstName={driver.firstName} lastName={driver.lastName} teamColor={teamColor} size="lg" />
+            <DriverImage driverId={driver.id} firstName={driver.firstName} lastName={driver.lastName} teamColor={teamColor} size="lg" />
             <div className="flex-1">
               <p className="text-xs text-grid-text-muted">{driver.nationality}</p>
               <p className="text-xl font-bold text-grid-text group-hover:text-white transition-colors" style={{ fontFamily: "var(--font-display)" }}>

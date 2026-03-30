@@ -47,7 +47,7 @@ export function StandingsPreview() {
               onMouseLeave={(e) => { e.currentTarget.style.background = ""; }}
             >
               <span className="w-6 text-lg font-bold text-grid-text-muted" style={{ fontFamily: "var(--font-display)" }}>{d.position}</span>
-              <DriverImage firstName={d.firstName} lastName={d.lastName} teamColor={d.teamColor} size="sm" />
+              <DriverImage driverId={d.driverId} firstName={d.firstName} lastName={d.lastName} teamColor={d.teamColor} size="sm" />
               <span className="w-1 self-stretch rounded-full" style={{ background: d.teamColor }} />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-grid-text truncate">{d.firstName} {d.lastName}</p>
@@ -74,7 +74,7 @@ export function StandingsPreview() {
               onMouseLeave={(e) => { e.currentTarget.style.background = ""; }}
             >
               <span className="w-6 text-lg font-bold text-grid-text-muted" style={{ fontFamily: "var(--font-display)" }}>{c.position}</span>
-              <TeamBadge teamId={c.teamId} teamName={c.name} color={c.color} size="sm" />
+              <TeamBadge teamId={c.teamId} teamName={c.name} size="sm" />
               <span className="w-1 self-stretch rounded-full" style={{ background: c.color }} />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-grid-text truncate">{c.name}</p>

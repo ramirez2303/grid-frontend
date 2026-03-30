@@ -1,7 +1,4 @@
-/**
- * Maps country names to ISO 3166-1 alpha-2 codes for flag images.
- * Windows doesn't render emoji flags, so we use flagcdn.com SVG images.
- */
+/** Maps country names to ISO 3166-1 alpha-2 codes */
 const countryCodes: Record<string, string> = {
   Australia: "au",
   China: "cn",
@@ -24,14 +21,39 @@ const countryCodes: Record<string, string> = {
   Qatar: "qa",
   "United Arab Emirates": "ae",
   Hungary: "hu",
+  Germany: "de",
+  France: "fr",
+  Finland: "fi",
+  Thailand: "th",
+  Argentina: "ar",
+  "New Zealand": "nz",
+};
+
+/** Maps nationality adjectives to ISO codes (for driver nationalities) */
+const nationalityCodes: Record<string, string> = {
+  Australian: "au",
+  British: "gb",
+  Dutch: "nl",
+  Monegasque: "mc",
+  Spanish: "es",
+  Italian: "it",
+  French: "fr",
+  Canadian: "ca",
+  German: "de",
+  Finnish: "fi",
+  Mexican: "mx",
+  Brazilian: "br",
+  Thai: "th",
+  Argentine: "ar",
+  "New Zealander": "nz",
 };
 
 export function getCountryCode(country: string): string | null {
-  return countryCodes[country] ?? null;
+  return countryCodes[country] ?? nationalityCodes[country] ?? null;
 }
 
 export function getCountryFlagUrl(country: string): string | null {
-  const code = countryCodes[country];
+  const code = getCountryCode(country);
   if (!code) return null;
   return `https://flagcdn.com/w40/${code}.png`;
 }

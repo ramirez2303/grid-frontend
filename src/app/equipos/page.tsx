@@ -1,73 +1,72 @@
 "use client";
 
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { useApi } from "@/hooks/useApi";
-import { getConstructorStandings, getDriverStandings } from "@/lib/api";
-import { StandingsToggle } from "@/components/dashboard/StandingsToggle";
+import { getConstructorStandings, getDriverStandings, getCalendar } from "@/lib/api";
+import { ChampionshipHero } from "@/components/dashboard/ChampionshipHero";
+import { SectionNav } from "@/components/dashboard/SectionNav";
 import { ConstructorStandingsTable } from "@/components/dashboard/ConstructorStandingsTable";
 import { DriverStandingsTable } from "@/components/dashboard/DriverStandingsTable";
 import { TeamGrid } from "@/components/dashboard/TeamGrid";
 import { SectionReveal } from "@/components/ui/SectionReveal";
 
 export default function EquiposPage() {
-  const [tab, setTab] = useState<"constructors" | "drivers">("constructors");
   const { data: constructors, loading: cLoading } = useApi(getConstructorStandings);
   const { data: drivers, loading: dLoading } = useApi(getDriverStandings);
+  const { data: calendar, loading: calLoading } = useApi(getCalendar);
 
-  const loading = cLoading || dLoading;
+  const loading = cLoading || dLoading || calLoading;
+
+  if (loading) {
+    return (
+      <div className="flex h-[60vh] items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-grid-text-muted border-t-team-mercedes" />
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl sm:text-5xl tracking-wider text-grid-text mb-2" style={{ fontFamily: "var(--font-display)" }}>
-          STANDINGS 2026
-        </h1>
-        <p className="text-sm text-grid-text-muted">Campeonato Mundial de Fórmula 1</p>
-      </div>
+      <ChampionshipHero
+        calendar={calendar ?? []}
+        driverLeader={drivers?.[0]}
+        constructorLeader={constructors?.[0]}
+      />
 
-      {/* Toggle */}
-      <div className="mb-8 max-w-xs">
-        <StandingsToggle active={tab} onChange={setTab} />
-      </div>
+      <SectionNav />
 
-      {loading ? (
-        <div className="flex h-64 items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-grid-text-muted border-t-team-mercedes" />
-        </div>
-      ) : (
-        <>
-          {/* Table */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={tab}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.25 }}
-              className="mb-12 rounded-xl bg-grid-surface border border-white/[0.06] overflow-hidden"
-            >
-              {tab === "constructors" && constructors && (
-                <ConstructorStandingsTable standings={constructors} />
-              )}
-              {tab === "drivers" && drivers && (
-                <DriverStandingsTable standings={drivers} />
-              )}
-            </motion.div>
-          </AnimatePresence>
+      {/* Constructores */}
+      <section id="constructores" className="pt-8">
+        <SectionReveal>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="h-6 w-1 rounded-full bg-team-mercedes" />
+            <h2 className="text-2xl sm:text-3xl tracking-wider text-grid-text" style={{ fontFamily: "var(--font-display)" }}>
+              CONSTRUCTORES
+            </h2>
+          </div>
+          <div className="rounded-xl bg-grid-surface border border-white/[0.06] overflow-hidden mb-8">
+            {constructors && <ConstructorStandingsTable standings={constructors} />}
+          </div>
+          {constructors && <TeamGrid standings={constructors} />}
+        </SectionReveal>
+      </section>
 
-          {/* Team cards (only in constructors view) */}
-          {tab === "constructors" && constructors && (
-            <SectionReveal>
-              <h2 className="text-2xl tracking-wider text-grid-text mb-6" style={{ fontFamily: "var(--font-display)" }}>
-                EQUIPOS
-              </h2>
-              <TeamGrid standings={constructors} />
-            </SectionReveal>
-          )}
-        </>
-      )}
+      {/* Separator */}
+      <div className="my-12 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+
+      {/* Pilotos */}
+      <section id="pilotos" className="pt-2">
+        <SectionReveal delay={0.1}>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="h-6 w-1 rounded-full bg-team-ferrari" />
+            <h2 className="text-2xl sm:text-3xl tracking-wider text-grid-text" style={{ fontFamily: "var(--font-display)" }}>
+              PILOTOS
+            </h2>
+          </div>
+          <div className="rounded-xl bg-grid-surface border border-white/[0.06] overflow-hidden">
+            {drivers && <DriverStandingsTable standings={drivers} />}
+          </div>
+        </SectionReveal>
+      </section>
     </div>
   );
 }

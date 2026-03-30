@@ -37,7 +37,7 @@ export function DriverStandingsTable({ standings }: DriverStandingsTableProps) {
               </td>
               <td className="py-3 px-3">
                 <Link href={`/pilotos/${d.driverId}`} className="flex items-center gap-3 group">
-                  <DriverImage firstName={d.firstName} lastName={d.lastName} teamColor={d.teamColor} size="sm" />
+                  <DriverImage driverId={d.driverId} firstName={d.firstName} lastName={d.lastName} teamColor={d.teamColor} size="sm" />
                   <span className="h-8 w-1 rounded-full" style={{ background: d.teamColor }} />
                   <div>
                     <p className="font-medium text-grid-text group-hover:text-white transition-colors">

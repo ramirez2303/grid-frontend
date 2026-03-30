@@ -28,6 +28,7 @@ export function PodiumCard({ result, index }: PodiumCardProps) {
       {/* Driver photo + info */}
       <div className="mb-3 flex flex-col items-center">
         <DriverImage
+          driverId={result.driverId}
           firstName={result.firstName}
           lastName={result.lastName}
           teamColor={result.teamColor}

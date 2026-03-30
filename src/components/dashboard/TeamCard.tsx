@@ -28,7 +28,7 @@ export function TeamCard({ team, index }: TeamCardProps) {
         <div className="p-5">
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
-              <TeamBadge teamId={team.teamId} teamName={team.name} color={team.color} size="md" />
+              <TeamBadge teamId={team.teamId} teamName={team.name} size="md" />
               <div>
                 <p className="text-lg font-bold text-grid-text group-hover:text-white transition-colors" style={{ fontFamily: "var(--font-display)" }}>
                   {team.name}

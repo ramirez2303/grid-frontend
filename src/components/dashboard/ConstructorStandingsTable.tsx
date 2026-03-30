@@ -41,7 +41,7 @@ export function ConstructorStandingsTable({ standings }: ConstructorStandingsTab
                 <td className="py-3 px-3">
                   <Link href={`/equipos/${team.teamId}`} className="flex items-center gap-3 group">
                     <span className="h-8 w-1.5 rounded-full" style={{ background: team.color }} />
-                    <TeamBadge teamId={team.teamId} teamName={team.name} color={team.color} size="sm" />
+                    <TeamBadge teamId={team.teamId} teamName={team.name} size="sm" />
                     <div>
                       <p className="font-medium text-grid-text group-hover:text-white transition-colors">{team.name}</p>
                       <p className="text-xs text-grid-text-muted">{team.engine}</p>

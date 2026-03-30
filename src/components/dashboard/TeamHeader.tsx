@@ -28,7 +28,7 @@ export function TeamHeader({ team, points, position }: TeamHeaderProps) {
       <div className="relative p-6 sm:p-8">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
           <div className="flex items-start gap-4">
-            <TeamBadge teamId={team.id} teamName={team.name} color={team.colorPrimary} size="lg" />
+            <TeamBadge teamId={team.id} teamName={team.name} size="lg" />
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-grid-text-muted mb-1">
                 P{position} — Constructores 2026

@@ -7,44 +7,41 @@ import { getTeamLogoUrl } from "@/lib/f1Media";
 interface TeamBadgeProps {
   teamId: string;
   teamName: string;
-  color?: string;
   size?: "sm" | "md" | "lg";
   className?: string;
 }
 
 const sizes = { sm: 24, md: 36, lg: 56 };
 
-export function TeamBadge({ teamId, teamName, color, size = "md", className = "" }: TeamBadgeProps) {
+export function TeamBadge({ teamId, teamName, size = "md", className = "" }: TeamBadgeProps) {
   const [failed, setFailed] = useState(false);
   const px = sizes[size];
-  const abbr = teamName.slice(0, 3).toUpperCase();
+  const url = getTeamLogoUrl(teamId, px * 2);
 
-  if (failed) {
+  if (failed || !url) {
     return (
       <div
-        className={`flex items-center justify-center rounded-md font-bold ${className}`}
+        className={`flex items-center justify-center rounded-md font-bold text-grid-text-muted flex-shrink-0 ${className}`}
         style={{
           width: px,
           height: px,
-          background: color ? `${color}20` : "var(--color-grid-card)",
-          color: color ?? "var(--color-grid-text-muted)",
+          background: "var(--color-grid-card)",
           fontSize: px * 0.3,
           fontFamily: "var(--font-display)",
-          letterSpacing: "0.05em",
         }}
       >
-        {abbr}
+        {teamName.slice(0, 3).toUpperCase()}
       </div>
     );
   }
 
   return (
     <Image
-      src={getTeamLogoUrl(teamId)}
+      src={url}
       alt={`${teamName} logo`}
       width={px}
       height={px}
-      className={`object-contain ${className}`}
+      className={`object-contain flex-shrink-0 ${className}`}
       onError={() => setFailed(true)}
       unoptimized
     />

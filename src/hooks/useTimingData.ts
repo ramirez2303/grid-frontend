@@ -1,15 +1,16 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { getTimingBoard, getPitStops, getRaceControl, getWeather } from "@/lib/api";
+import { getTimingBoard, getPitStops, getRaceControl, getWeather, getStrategy } from "@/lib/api";
 
-import type { TimingResponse, PitStopEntry, RaceControlMessage, WeatherData } from "@/types/timing";
+import type { TimingResponse, PitStopEntry, RaceControlMessage, WeatherData, StintData } from "@/types/timing";
 
 interface UseTimingDataResult {
   timing: TimingResponse | null;
   pitStops: PitStopEntry[];
   raceControl: RaceControlMessage[];
   weather: WeatherData | null;
+  stints: StintData[];
   loading: boolean;
   error: string | null;
 }
@@ -19,42 +20,60 @@ export function useTimingData(sessionKey: number | null, pollEnabled: boolean = 
   const [pitStops, setPitStops] = useState<PitStopEntry[]>([]);
   const [raceControl, setRaceControl] = useState<RaceControlMessage[]>([]);
   const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [stints, setStints] = useState<StintData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    // Reset state when session changes
+    // Abort previous fetches
+    abortRef.current?.abort();
+    if (intervalRef.current) clearInterval(intervalRef.current);
+
+    // Reset state
     setTiming(null);
     setPitStops([]);
     setRaceControl([]);
     setWeather(null);
+    setStints([]);
     setError(null);
 
     if (!sessionKey) { setLoading(false); return; }
 
-    let cancelled = false;
+    const controller = new AbortController();
+    abortRef.current = controller;
 
     async function fetchAll(): Promise<void> {
-      try {
-        const [t, p, rc, w] = await Promise.all([
-          getTimingBoard(sessionKey!),
-          getPitStops(sessionKey!).catch(() => [] as PitStopEntry[]),
-          getRaceControl(sessionKey!).catch(() => [] as RaceControlMessage[]),
-          getWeather(sessionKey!).catch(() => null),
-        ]);
-        if (cancelled) return;
-        setTiming(t);
-        setPitStops(p);
-        setRaceControl(rc);
-        setWeather(w);
-        setError(null);
-      } catch (err) {
-        if (cancelled) return;
-        setError(err instanceof Error ? err.message : "Failed to fetch timing data");
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
+      console.log(`Fetching timing data for session ${sessionKey}`);
+
+      const results = await Promise.allSettled([
+        getTimingBoard(sessionKey!),
+        getPitStops(sessionKey!),
+        getRaceControl(sessionKey!),
+        getWeather(sessionKey!),
+        getStrategy(sessionKey!),
+      ]);
+
+      if (controller.signal.aborted) return;
+
+      const [tResult, pResult, rcResult, wResult, sResult] = results;
+
+      const t = tResult.status === "fulfilled" ? tResult.value : null;
+      const p = pResult.status === "fulfilled" ? pResult.value : [];
+      const rc = rcResult.status === "fulfilled" ? rcResult.value : [];
+      const w = wResult.status === "fulfilled" ? wResult.value : null;
+      const s = sResult.status === "fulfilled" ? sResult.value : [];
+
+      console.log(`Timing data loaded: ${t?.entries.length ?? 0} entries, ${p.length} pit stops, ${rc.length} messages, ${s.length} stints`);
+
+      setTiming(t);
+      setPitStops(p);
+      setRaceControl(rc);
+      setWeather(w);
+      setStints(s);
+      setError(t == null ? "Failed to load timing board" : null);
+      setLoading(false);
     }
 
     setLoading(true);
@@ -65,10 +84,10 @@ export function useTimingData(sessionKey: number | null, pollEnabled: boolean = 
     }
 
     return () => {
-      cancelled = true;
+      controller.abort();
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [sessionKey, pollEnabled, pollInterval]);
 
-  return { timing, pitStops, raceControl, weather, loading, error };
+  return { timing, pitStops, raceControl, weather, stints, loading, error };
 }

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useApi } from "@/hooks/useApi";
 import { useTimingData } from "@/hooks/useTimingData";
-import { getMeetings, getSessions, getStrategy } from "@/lib/api";
+import { getMeetings, getSessions } from "@/lib/api";
 import { SessionSelector } from "@/components/live/SessionSelector";
 import { SessionStatus } from "@/components/live/SessionStatus";
 import { TimingBoard } from "@/components/live/TimingBoard";
@@ -13,14 +13,13 @@ import { WeatherPanel } from "@/components/live/WeatherPanel";
 import { StrategyView } from "@/components/live/StrategyView";
 import { FutureSessionState } from "@/components/live/FutureSessionState";
 
-import type { SessionInfo, StintData } from "@/types/timing";
+import type { SessionInfo } from "@/types/timing";
 
 export default function LivePage() {
   const { data: meetings } = useApi(() => getMeetings(2026));
   const [meetingKey, setMeetingKey] = useState<number | null>(null);
   const [sessions, setSessions] = useState<SessionInfo[]>([]);
   const [sessionKey, setSessionKey] = useState<number | null>(null);
-  const [stints, setStints] = useState<StintData[]>([]);
 
   // Load sessions when meeting changes
   useEffect(() => {
@@ -43,12 +42,7 @@ export default function LivePage() {
     if (race) setSessionKey(race.sessionKey);
   }, [sessions]);
 
-  const { timing, pitStops, raceControl, weather, loading } = useTimingData(sessionKey);
-
-  useEffect(() => {
-    if (!sessionKey) return;
-    getStrategy(sessionKey).then(setStints).catch(() => setStints([]));
-  }, [sessionKey]);
+  const { timing, pitStops, raceControl, weather, stints, loading } = useTimingData(sessionKey);
 
   const currentSession = sessions.find((s) => s.sessionKey === sessionKey) ?? null;
   const hasData = timing != null && timing.entries.length > 0;

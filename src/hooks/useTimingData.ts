@@ -24,25 +24,36 @@ export function useTimingData(sessionKey: number | null, pollEnabled: boolean = 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
+    // Reset state when session changes
+    setTiming(null);
+    setPitStops([]);
+    setRaceControl([]);
+    setWeather(null);
+    setError(null);
+
     if (!sessionKey) { setLoading(false); return; }
+
+    let cancelled = false;
 
     async function fetchAll(): Promise<void> {
       try {
         const [t, p, rc, w] = await Promise.all([
           getTimingBoard(sessionKey!),
-          getPitStops(sessionKey!).catch(() => []),
-          getRaceControl(sessionKey!).catch(() => []),
+          getPitStops(sessionKey!).catch(() => [] as PitStopEntry[]),
+          getRaceControl(sessionKey!).catch(() => [] as RaceControlMessage[]),
           getWeather(sessionKey!).catch(() => null),
         ]);
+        if (cancelled) return;
         setTiming(t);
         setPitStops(p);
         setRaceControl(rc);
         setWeather(w);
         setError(null);
       } catch (err) {
+        if (cancelled) return;
         setError(err instanceof Error ? err.message : "Failed to fetch timing data");
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     }
 
@@ -54,6 +65,7 @@ export function useTimingData(sessionKey: number | null, pollEnabled: boolean = 
     }
 
     return () => {
+      cancelled = true;
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [sessionKey, pollEnabled, pollInterval]);

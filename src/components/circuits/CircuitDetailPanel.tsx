@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { getCircuit, getResults } from "@/lib/api";
 import { CircuitHero } from "./CircuitHero";
+import { CircuitTrackView } from "./CircuitTrackView";
 import { CircuitTechnical } from "./CircuitTechnical";
+import { CircuitElevation } from "./CircuitElevation";
 import { CircuitRaceResult } from "./CircuitRaceResult";
 import { CircuitWinners } from "./CircuitWinners";
 import { SectionReveal } from "@/components/ui/SectionReveal";
@@ -45,7 +47,15 @@ export function CircuitDetailPanel({ race }: CircuitDetailPanelProps) {
           <CircuitHero circuit={circuit} race={race} winnerColor={raceResult?.results[0]?.teamColor} />
 
           <SectionReveal>
+            <CircuitTrackView circuitId={circuit.id} />
+          </SectionReveal>
+
+          <SectionReveal delay={0.05}>
             <CircuitTechnical circuit={circuit} />
+          </SectionReveal>
+
+          <SectionReveal delay={0.1}>
+            <CircuitElevation circuitId={circuit.id} />
           </SectionReveal>
 
           {raceResult && (

@@ -74,6 +74,16 @@ export function getCircuitWinners(circuitId: string): Promise<CircuitWinner[]> {
   return fetchApi<CircuitWinner[]>(`/api/circuits/${circuitId}/winners`);
 }
 
+import type { CircuitTrackData, CircuitElevationData } from "@/types/api";
+
+export function getCircuitTrackData(circuitId: string): Promise<CircuitTrackData> {
+  return fetchApi<CircuitTrackData>(`/api/circuits/${circuitId}/trackdata`);
+}
+
+export function getCircuitElevation(circuitId: string): Promise<CircuitElevationData> {
+  return fetchApi<CircuitElevationData>(`/api/circuits/${circuitId}/elevation`);
+}
+
 // Timing
 import type { TimingResponse, PitStopEntry, RaceControlMessage, WeatherData, StintData, MeetingInfo, SessionInfo } from "@/types/timing";
 

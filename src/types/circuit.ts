@@ -37,3 +37,26 @@ export interface CircuitWinner {
   teamName: string;
   time: string | null;
 }
+
+export interface CircuitCorner {
+  number: number;
+  angle: number;
+  length: number;
+  x: number;
+  y: number;
+}
+
+export interface CircuitTrackData {
+  trackPoints: { x: number; y: number }[];
+  corners: CircuitCorner[];
+  marshalSectors: { number: number; x: number; y: number }[];
+  rotation: number;
+  bounds: { minX: number; maxX: number; minY: number; maxY: number };
+}
+
+export interface CircuitElevationData {
+  points: { distance: number; altitude: number }[];
+  minAltitude: number;
+  maxAltitude: number;
+  totalClimb: number;
+}

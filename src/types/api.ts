@@ -136,4 +136,4 @@ export interface DriverDetail {
   team: DriverTeamSummary;
 }
 
-export type { CircuitListItem, CircuitDetail, CircuitWinner } from "./circuit";
+export type { CircuitListItem, CircuitDetail, CircuitWinner, CircuitTrackData, CircuitElevationData } from "./circuit";

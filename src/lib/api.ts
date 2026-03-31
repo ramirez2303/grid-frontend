@@ -73,3 +73,34 @@ export function getCircuit(circuitId: string): Promise<CircuitDetail> {
 export function getCircuitWinners(circuitId: string): Promise<CircuitWinner[]> {
   return fetchApi<CircuitWinner[]>(`/api/circuits/${circuitId}/winners`);
 }
+
+// Timing
+import type { TimingResponse, PitStopEntry, RaceControlMessage, WeatherData, StintData, MeetingInfo, SessionInfo } from "@/types/timing";
+
+export function getMeetings(year: number = 2026): Promise<MeetingInfo[]> {
+  return fetchApi<MeetingInfo[]>(`/api/meetings?year=${year}`);
+}
+
+export function getSessions(meetingKey: number): Promise<SessionInfo[]> {
+  return fetchApi<SessionInfo[]>(`/api/sessions/${meetingKey}`);
+}
+
+export function getTimingBoard(sessionKey: number): Promise<TimingResponse> {
+  return fetchApi<TimingResponse>(`/api/timing/${sessionKey}`);
+}
+
+export function getPitStops(sessionKey: number): Promise<PitStopEntry[]> {
+  return fetchApi<PitStopEntry[]>(`/api/timing/${sessionKey}/pitstops`);
+}
+
+export function getRaceControl(sessionKey: number): Promise<RaceControlMessage[]> {
+  return fetchApi<RaceControlMessage[]>(`/api/timing/${sessionKey}/racecontrol`);
+}
+
+export function getWeather(sessionKey: number): Promise<WeatherData> {
+  return fetchApi<WeatherData>(`/api/timing/${sessionKey}/weather`);
+}
+
+export function getStrategy(sessionKey: number): Promise<StintData[]> {
+  return fetchApi<StintData[]>(`/api/timing/${sessionKey}/strategy`);
+}

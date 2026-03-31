@@ -1,7 +1,6 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import Link from "next/link";
 import { Canvas } from "@react-three/fiber";
 import { CountryFlag } from "@/components/ui/CountryFlag";
 import { GlobeScene } from "./GlobeScene";
@@ -74,12 +73,12 @@ export function GlobeView({ circuits, calendar, selectedId, onSelectCircuit }: G
               <span className="text-xs text-grid-text-muted hidden sm:inline" style={{ fontFamily: "var(--font-mono)" }}>
                 {selectedRace.hasResults ? "Completada" : new Date(selectedRace.date).toLocaleDateString("es-AR", { day: "numeric", month: "short" })}
               </span>
-              <Link
-                href={`/circuitos/${selectedRace.circuitId}`}
+              <button
+                onClick={() => document.getElementById("circuit-detail")?.scrollIntoView({ behavior: "smooth" })}
                 className="text-xs font-medium px-3 py-1.5 rounded-lg bg-team-mclaren/20 text-team-mclaren hover:bg-team-mclaren/30 transition-colors whitespace-nowrap"
               >
-                Ver detalle
-              </Link>
+                Ver detalle ↓
+              </button>
             </div>
           </div>
         ) : (

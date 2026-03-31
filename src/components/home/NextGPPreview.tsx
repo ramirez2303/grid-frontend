@@ -18,7 +18,7 @@ export function NextGPPreview({ race }: NextGPPreviewProps) {
 
   return (
     <div className="relative overflow-hidden rounded-2xl bg-grid-surface border border-white/[0.06]">
-      <Link href={`/circuitos/${race.circuitId}`}>
+      <Link href="/circuitos">
         {/* Top gradient — broadcast "coming up" feel */}
         <div className="h-1.5 bg-gradient-to-r from-team-mercedes via-team-mclaren to-team-ferrari" />
 

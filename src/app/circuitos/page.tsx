@@ -56,7 +56,9 @@ export default function CircuitosPage() {
         </div>
       </div>
 
-      <CircuitDetailPanel race={selectedRace} />
+      <div id="circuit-detail">
+        <CircuitDetailPanel race={selectedRace} />
+      </div>
     </div>
   );
 }

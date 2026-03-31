@@ -51,7 +51,8 @@ export default function LivePage() {
   }, [sessionKey]);
 
   const currentSession = sessions.find((s) => s.sessionKey === sessionKey) ?? null;
-  const hasData = timing && timing.entries.length > 0;
+  const hasData = timing != null && timing.entries.length > 0;
+  const isFutureSession = currentSession ? new Date(currentSession.dateEnd) > new Date() : false;
 
   const goToLatest = useCallback(() => {
     if (!meetings) return;
@@ -78,8 +79,13 @@ export default function LivePage() {
         <div className="flex h-64 items-center justify-center">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-grid-text-muted border-t-team-mclaren" />
         </div>
-      ) : !hasData && currentSession ? (
+      ) : !hasData && isFutureSession && currentSession ? (
         <FutureSessionState session={currentSession} onGoToLatest={goToLatest} />
+      ) : !hasData ? (
+        <div className="flex h-64 flex-col items-center justify-center gap-2">
+          <p className="text-lg text-grid-text">Sin datos disponibles</p>
+          <p className="text-sm text-grid-text-muted">Los datos de esta sesión aún no están disponibles o hubo un error al cargarlos.</p>
+        </div>
       ) : timing ? (
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
           <div className="xl:col-span-3">

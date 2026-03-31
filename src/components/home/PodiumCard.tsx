@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { DriverImage } from "@/components/ui/DriverImage";
 
 import type { RaceResultItem } from "@/types/api";
+import Link from "next/link";
 
 interface PodiumCardProps {
   result: RaceResultItem;
@@ -27,23 +28,31 @@ export function PodiumCard({ result, index }: PodiumCardProps) {
     >
       {/* Driver photo + info */}
       <div className="mb-3 flex flex-col items-center">
-        <DriverImage
-          driverId={result.driverId}
-          firstName={result.firstName}
-          lastName={result.lastName}
-          teamColor={result.teamColor}
-          size={isWinner ? "lg" : "md"}
-          variant="fullbody"
-          className="mb-2"
-        />
-        <span
-          className="text-2xl sm:text-3xl font-bold"
-          style={{ fontFamily: "var(--font-display)", color: result.teamColor }}
-        >
-          {result.abbreviation}
-        </span>
-        <p className="text-xs text-grid-text-secondary mt-0.5">{result.firstName} {result.lastName}</p>
-        <p className="text-[10px] text-grid-text-muted">{result.teamName}</p>
+        <Link href={`/pilotos/${result.driverId}`} className="flex flex-col items-center">
+          <DriverImage
+            driverId={result.driverId}
+            firstName={result.firstName}
+            lastName={result.lastName}
+            teamColor={result.teamColor}
+            size={isWinner ? "xl" : "lg"}
+            variant="fullbody"
+            className="mb-2"
+          />
+        </Link>
+        <Link href={`/pilotos/${result.driverId}`}>
+          <span
+            className="text-2xl sm:text-3xl font-bold"
+            style={{ fontFamily: "var(--font-display)", color: result.teamColor }}
+          >
+            {result.abbreviation}
+          </span>
+        </Link>
+        <Link href={`/pilotos/${result.driverId}`}>
+          <p className="text-xs text-grid-text-secondary mt-0.5">{result.firstName} {result.lastName}</p>
+        </Link>
+        <Link href={`/equipos/${result.teamId}`}>
+          <p className="text-[10px] text-grid-text-muted">{result.teamName}</p>
+        </Link>
       </div>
 
       {/* Podium bar */}

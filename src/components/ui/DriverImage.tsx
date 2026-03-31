@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { getDriverHeadshotUrl, getDriverImageUrl } from "@/lib/f1Media";
 import Image from "next/image";
-import { getDriverImageUrl, getDriverHeadshotUrl } from "@/lib/f1Media";
+import { useState } from "react";
 
 interface DriverImageProps {
   driverId: string;
@@ -47,7 +47,7 @@ export function DriverImage({ driverId, firstName, lastName, teamColor, size = "
       alt={`${firstName} ${lastName}`}
       width={px}
       height={px}
-      className={`rounded-full object-cover bg-grid-card flex-shrink-0 ${className}`}
+      className={`rounded-full object-cover bg-grid-card flex-shrink-0 ${className} ${variant === "fullbody" ? "px-2 py-4" : ""}  `}
       style={{ border: `2px solid ${teamColor}40` }}
       onError={() => setFailed(true)}
       unoptimized

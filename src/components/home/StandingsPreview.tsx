@@ -40,8 +40,9 @@ export function StandingsPreview() {
         <div className="space-y-2">
           <h3 className="text-xs font-bold uppercase tracking-widest text-grid-text-muted mb-3">Pilotos</h3>
           {topDrivers.map((d) => (
-            <div
+            <Link
               key={d.driverId}
+              href={`/pilotos/${d.driverId}`}
               className="group flex items-center gap-3 rounded-lg bg-grid-surface border border-white/[0.06] px-4 py-2.5 transition-all hover:border-white/10"
               onMouseEnter={(e) => { e.currentTarget.style.background = `${d.teamColor}08`; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = ""; }}
@@ -59,7 +60,7 @@ export function StandingsPreview() {
                 </div>
                 <span className="text-sm font-bold text-grid-text tabular-nums w-8 text-right" style={{ fontFamily: "var(--font-mono)" }}>{d.points}</span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
@@ -67,8 +68,9 @@ export function StandingsPreview() {
         <div className="space-y-2">
           <h3 className="text-xs font-bold uppercase tracking-widest text-grid-text-muted mb-3">Constructores</h3>
           {topConstructors.map((c) => (
-            <div
+            <Link
               key={c.teamId}
+              href={`/equipos/${c.teamId}`}
               className="group flex items-center gap-3 rounded-lg bg-grid-surface border border-white/[0.06] px-4 py-2.5 transition-all hover:border-white/10"
               onMouseEnter={(e) => { e.currentTarget.style.background = `${c.color}08`; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = ""; }}
@@ -86,7 +88,7 @@ export function StandingsPreview() {
                 </div>
                 <span className="text-sm font-bold text-grid-text tabular-nums w-8 text-right" style={{ fontFamily: "var(--font-mono)" }}>{c.points}</span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

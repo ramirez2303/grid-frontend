@@ -4,6 +4,7 @@ import { useApi } from "@/hooks/useApi";
 import { getLastRaceResult } from "@/lib/api";
 import { CountryFlag } from "@/components/ui/CountryFlag";
 import { PodiumCard } from "./PodiumCard";
+import Link from "next/link";
 
 export function LastRaceResult() {
   const { data: race, loading, error } = useApi(getLastRaceResult);
@@ -47,9 +48,10 @@ export function LastRaceResult() {
       {/* Rest P4-P10 */}
       <div className="flex flex-wrap justify-center gap-2">
         {rest.map((r) => (
-          <div
+          <Link
             key={r.driverId}
-            className="group flex items-center gap-2 rounded-lg bg-grid-surface border border-white/[0.06] px-3 py-2 hover:border-white/10 hover:bg-grid-card transition-all cursor-default"
+            href={`/pilotos/${r.driverId}`}
+            className="group flex items-center gap-2 rounded-lg bg-grid-surface border border-white/[0.06] px-3 py-2 hover:border-white/10 hover:bg-grid-card transition-all"
           >
             <span className="text-xs font-bold text-grid-text-muted" style={{ fontFamily: "var(--font-mono)" }}>
               P{r.position}
@@ -59,7 +61,7 @@ export function LastRaceResult() {
             <span className="text-xs text-grid-text-muted group-hover:text-grid-text-secondary transition-colors" style={{ fontFamily: "var(--font-mono)" }}>
               {r.time ?? r.status}
             </span>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

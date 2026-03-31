@@ -121,3 +121,22 @@ export function getNews(params?: { source?: string; topic?: string; search?: str
 export function getGlossary(): Promise<GlossaryTerm[]> {
   return fetchApi<GlossaryTerm[]>("/api/glossary");
 }
+
+// Trivia + Facts + Records
+import type { RecordItem, TriviaQuestionItem, DailyFactItem } from "@/types/trivia";
+
+export function getRecords(): Promise<RecordItem[]> {
+  return fetchApi<RecordItem[]>("/api/records");
+}
+
+export function getTriviaQuestions(count: number = 10): Promise<TriviaQuestionItem[]> {
+  return fetchApi<TriviaQuestionItem[]>(`/api/trivia/random?count=${count}`);
+}
+
+export function getDailyFact(): Promise<DailyFactItem | null> {
+  return fetchApi<DailyFactItem | null>("/api/facts/daily");
+}
+
+export function getFactsByTag(tag: string): Promise<DailyFactItem[]> {
+  return fetchApi<DailyFactItem[]>(`/api/facts?tag=${tag}`);
+}

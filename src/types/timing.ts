@@ -100,3 +100,9 @@ export const SECTOR_COLORS: Record<SectorColor, string> = {
   yellow: "#EAB308",
   none: "#55555F",
 };
+
+// Gap chart types
+export interface GapDataPoint { lap: number; gap: number }
+export interface DriverGapSeries { driverNumber: number; abbreviation: string; teamColor: string; gaps: GapDataPoint[] }
+export interface GapPitStopMarker { driverNumber: number; lap: number }
+export interface GapChartData { drivers: DriverGapSeries[]; totalLaps: number; safetyCarLaps: number[]; pitStopLaps: GapPitStopMarker[] }

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { useApi } from "@/hooks/useApi";
 import { useTimingData } from "@/hooks/useTimingData";
+import { useGapChart } from "@/hooks/useGapChart";
 import { getMeetings, getSessions } from "@/lib/api";
 import { SessionSelector } from "@/components/live/SessionSelector";
 import { SessionStatus } from "@/components/live/SessionStatus";
@@ -13,6 +14,7 @@ import { RaceControlPanel } from "@/components/live/RaceControlPanel";
 import { WeatherPanel } from "@/components/live/WeatherPanel";
 import { StrategyView } from "@/components/live/StrategyView";
 import { FutureSessionState } from "@/components/live/FutureSessionState";
+import { GapChart } from "@/components/live/GapChart";
 
 import type { SessionInfo } from "@/types/timing";
 
@@ -34,6 +36,7 @@ export default function LivePage() {
   const hasData = timing != null && timing.entries.length > 0;
   const isFutureSession = currentSession ? new Date(currentSession.dateEnd) > new Date() : false;
   const isRace = currentSession?.type === "Race";
+  const { data: gapData } = useGapChart(isRace && hasData ? sessionKey : null);
 
   const goToLatest = useCallback(() => { if (!meetings) return; const now = new Date(); const c = meetings.filter((m) => new Date(m.dateStart) < now && !m.name.includes("Testing")); if (c[c.length - 1]) setMeetingKey(c[c.length - 1]!.meetingKey); }, [meetings]);
 
@@ -68,7 +71,10 @@ export default function LivePage() {
         <div className="flex h-64 flex-col items-center justify-center gap-2"><p className="text-lg text-grid-text">Sin datos disponibles</p></div>
       ) : timing ? (
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
-          <div className="xl:col-span-3"><TimingBoard data={timing} /></div>
+          <div className="xl:col-span-3 space-y-4">
+            <TimingBoard data={timing} />
+            {gapData && <GapChart data={gapData} />}
+          </div>
           <div className="space-y-4">
             <WeatherPanel weather={weather} />
             <PitStopPanel pitStops={pitStops} />

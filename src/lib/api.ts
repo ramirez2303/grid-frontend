@@ -115,6 +115,12 @@ export function getStrategy(sessionKey: number): Promise<StintData[]> {
   return fetchApi<StintData[]>(`/api/timing/${sessionKey}/strategy`);
 }
 
+import type { GapChartData } from "@/types/timing";
+
+export function getGapChart(sessionKey: number): Promise<GapChartData> {
+  return fetchApi<GapChartData>(`/api/timing/${sessionKey}/gaps`);
+}
+
 // News + Glossary
 import type { NewsResponse, GlossaryTerm } from "@/types/news";
 

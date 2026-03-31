@@ -40,7 +40,7 @@ export default function LabPage() {
       </div>
 
       {/* 3D Viewer */}
-      <CarViewer teamColor={teamColor} viewMode={viewMode} />
+      <CarViewer teamId={teamId} teamColor={teamColor} viewMode={viewMode} />
 
       {/* Instructions */}
       <div className="mt-4 flex flex-wrap gap-4 text-[10px] text-grid-text-muted">

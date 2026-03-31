@@ -9,11 +9,12 @@ import { CarAnnotations } from "./CarAnnotations";
 import type { ViewMode } from "./ViewModeToggle";
 
 interface CarViewerProps {
+  teamId: string;
   teamColor: string;
   viewMode: ViewMode;
 }
 
-export function CarViewer({ teamColor, viewMode }: CarViewerProps) {
+export function CarViewer({ teamId, teamColor, viewMode }: CarViewerProps) {
   return (
     <div className="w-full h-[70vh] min-h-[500px] rounded-2xl bg-grid-surface border border-white/[0.06] overflow-hidden">
       <Suspense fallback={
@@ -32,7 +33,7 @@ export function CarViewer({ teamColor, viewMode }: CarViewerProps) {
           <Environment preset="city" />
 
           {/* Car */}
-          <CarModel color={teamColor} wireframe={viewMode === "wireframe"} xray={viewMode === "xray"} />
+          <CarModel teamId={teamId} color={teamColor} wireframe={viewMode === "wireframe"} xray={viewMode === "xray"} />
           <CarAnnotations />
 
           {/* Ground */}

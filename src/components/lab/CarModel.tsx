@@ -21,8 +21,8 @@ const OFFSET: [number, number, number] = [-1398 * SCALE, -(-31) * SCALE, 0];
 
 function classifyMesh(name: string, centerX: number, sizeX: number): keyof TeamLivery {
   if (name === "Object_12") return "detail";
-  if (centerX > 2500) return "wings";
-  if (centerX < 500) return "bodyRear";
+  if (centerX < 500) return "wings";
+  if (centerX > 2500) return "bodyRear";
   if (sizeX < 4200) return "accent";
   return "body";
 }

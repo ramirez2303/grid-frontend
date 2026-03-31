@@ -104,3 +104,20 @@ export function getWeather(sessionKey: number): Promise<WeatherData> {
 export function getStrategy(sessionKey: number): Promise<StintData[]> {
   return fetchApi<StintData[]>(`/api/timing/${sessionKey}/strategy`);
 }
+
+// News + Glossary
+import type { NewsResponse, GlossaryTerm } from "@/types/news";
+
+export function getNews(params?: { source?: string; topic?: string; search?: string; limit?: number; offset?: number }): Promise<NewsResponse> {
+  const qs = new URLSearchParams();
+  if (params?.source) qs.set("source", params.source);
+  if (params?.topic) qs.set("topic", params.topic);
+  if (params?.search) qs.set("search", params.search);
+  if (params?.limit) qs.set("limit", String(params.limit));
+  if (params?.offset) qs.set("offset", String(params.offset));
+  return fetchApi<NewsResponse>(`/api/news?${qs.toString()}`);
+}
+
+export function getGlossary(): Promise<GlossaryTerm[]> {
+  return fetchApi<GlossaryTerm[]>("/api/glossary");
+}

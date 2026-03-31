@@ -18,6 +18,7 @@ export interface ReplayData {
   frames: Record<number, ReplayFrame[]>;
   totalLaps: number;
   drivers: ReplayDriverInfo[];
+  lapTimestamps: string[];
 }
 
 export interface ElevationProfile {

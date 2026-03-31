@@ -11,7 +11,7 @@ interface ReplayLayoutProps {
 }
 
 export function ReplayLayout({ sessionKey }: ReplayLayoutProps) {
-  const { track, replayData, elevation, loading, error, isPlaying, speed, currentIndex, fraction, totalTimestamps, play, pause, setSpeed, seekTo, restart } = useReplayData(sessionKey);
+  const { track, replayData, elevation, loading, error, isPlaying, speed, currentIndex, fraction, lapProgress, totalTimestamps, play, pause, setSpeed, seekTo, restart } = useReplayData(sessionKey);
 
   if (loading) {
     return (
@@ -28,7 +28,6 @@ export function ReplayLayout({ sessionKey }: ReplayLayoutProps) {
 
   const ts = replayData.timestamps[currentIndex];
   const currentFrames = ts != null ? replayData.frames[ts] ?? [] : [];
-  const progress = totalTimestamps > 0 ? currentIndex / totalTimestamps : 0;
 
   return (
     <div className="space-y-4">
@@ -41,7 +40,7 @@ export function ReplayLayout({ sessionKey }: ReplayLayoutProps) {
 
       <ReplayControls isPlaying={isPlaying} speed={speed} currentIndex={currentIndex} totalTimestamps={totalTimestamps} onPlay={play} onPause={pause} onSpeedChange={setSpeed} onSeek={seekTo} onRestart={restart} />
 
-      {elevation && <ElevationProfile points={elevation.points} progress={progress} />}
+      {elevation && <ElevationProfile points={elevation.points} progress={lapProgress} />}
     </div>
   );
 }

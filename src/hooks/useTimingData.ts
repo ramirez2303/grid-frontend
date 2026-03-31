@@ -23,15 +23,11 @@ export function useTimingData(sessionKey: number | null, pollEnabled: boolean = 
   const [stints, setStints] = useState<StintData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const abortRef = useRef<AbortController | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    // Abort previous fetches
-    abortRef.current?.abort();
-    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (intervalRef.current) { clearInterval(intervalRef.current); intervalRef.current = null; }
 
-    // Reset state
     setTiming(null);
     setPitStops([]);
     setRaceControl([]);
@@ -41,31 +37,35 @@ export function useTimingData(sessionKey: number | null, pollEnabled: boolean = 
 
     if (!sessionKey) { setLoading(false); return; }
 
-    const controller = new AbortController();
-    abortRef.current = controller;
+    let cancelled = false;
+    const key = sessionKey;
 
     async function fetchAll(): Promise<void> {
-      console.log(`Fetching timing data for session ${sessionKey}`);
+      console.log(`[useTimingData] Fetching session ${key}...`);
 
       const results = await Promise.allSettled([
-        getTimingBoard(sessionKey!),
-        getPitStops(sessionKey!),
-        getRaceControl(sessionKey!),
-        getWeather(sessionKey!),
-        getStrategy(sessionKey!),
+        getTimingBoard(key),
+        getPitStops(key),
+        getRaceControl(key),
+        getWeather(key),
+        getStrategy(key),
       ]);
 
-      if (controller.signal.aborted) return;
+      if (cancelled) { console.log(`[useTimingData] Cancelled for session ${key}`); return; }
 
-      const [tResult, pResult, rcResult, wResult, sResult] = results;
+      const t = results[0]?.status === "fulfilled" ? results[0].value : null;
+      const p = results[1]?.status === "fulfilled" ? results[1].value : [];
+      const rc = results[2]?.status === "fulfilled" ? results[2].value : [];
+      const w = results[3]?.status === "fulfilled" ? results[3].value : null;
+      const s = results[4]?.status === "fulfilled" ? results[4].value : [];
 
-      const t = tResult.status === "fulfilled" ? tResult.value : null;
-      const p = pResult.status === "fulfilled" ? pResult.value : [];
-      const rc = rcResult.status === "fulfilled" ? rcResult.value : [];
-      const w = wResult.status === "fulfilled" ? wResult.value : null;
-      const s = sResult.status === "fulfilled" ? sResult.value : [];
+      for (let i = 0; i < results.length; i++) {
+        if (results[i]?.status === "rejected") {
+          console.error(`[useTimingData] Fetch ${i} failed:`, (results[i] as PromiseRejectedResult).reason);
+        }
+      }
 
-      console.log(`Timing data loaded: ${t?.entries.length ?? 0} entries, ${p.length} pit stops, ${rc.length} messages, ${s.length} stints`);
+      console.log(`[useTimingData] Loaded: ${t?.entries?.length ?? 0} entries, ${p.length} pits, ${rc.length} rc, ${s.length} stints`);
 
       setTiming(t);
       setPitStops(p);
@@ -83,10 +83,7 @@ export function useTimingData(sessionKey: number | null, pollEnabled: boolean = 
       intervalRef.current = setInterval(() => void fetchAll(), pollInterval);
     }
 
-    return () => {
-      controller.abort();
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
+    return () => { cancelled = true; if (intervalRef.current) { clearInterval(intervalRef.current); intervalRef.current = null; } };
   }, [sessionKey, pollEnabled, pollInterval]);
 
   return { timing, pitStops, raceControl, weather, stints, loading, error };

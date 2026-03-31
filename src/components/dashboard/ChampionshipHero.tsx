@@ -5,6 +5,7 @@ import { DriverImage } from "@/components/ui/DriverImage";
 import { TeamBadge } from "@/components/ui/TeamBadge";
 
 import type { CalendarRace, DriverStanding, ConstructorStanding } from "@/types/api";
+import Link from "next/link";
 
 interface ChampionshipHeroProps {
   calendar: CalendarRace[];
@@ -47,7 +48,7 @@ export function ChampionshipHero({ calendar, driverLeader, constructorLeader }: 
       {/* Leader cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {constructorLeader && (
-          <div className="flex items-center gap-4 rounded-xl bg-grid-surface border border-white/[0.06] p-4">
+          <Link href={`/equipos/${constructorLeader.teamId}`} className="flex items-center gap-4 rounded-xl bg-grid-surface border border-white/[0.06] p-4">
             <TeamBadge teamId={constructorLeader.teamId} teamName={constructorLeader.name} size="lg" />
             <div>
               <p className="text-[10px] uppercase tracking-widest text-grid-text-muted">Líder Constructores</p>
@@ -56,10 +57,10 @@ export function ChampionshipHero({ calendar, driverLeader, constructorLeader }: 
               </p>
               <p className="text-sm font-bold text-grid-text" style={{ fontFamily: "var(--font-mono)" }}>{constructorLeader.points} pts</p>
             </div>
-          </div>
+          </Link>
         )}
         {driverLeader && (
-          <div className="flex items-center gap-4 rounded-xl bg-grid-surface border border-white/[0.06] p-4">
+          <Link href={`/pilotos/${driverLeader.driverId}`} className="flex items-center gap-4 rounded-xl bg-grid-surface border border-white/[0.06] p-4">
             <DriverImage driverId={driverLeader.driverId} firstName={driverLeader.firstName} lastName={driverLeader.lastName} teamColor={driverLeader.teamColor} size="lg" />
             <div>
               <p className="text-[10px] uppercase tracking-widest text-grid-text-muted">Líder Pilotos</p>
@@ -68,7 +69,7 @@ export function ChampionshipHero({ calendar, driverLeader, constructorLeader }: 
               </p>
               <p className="text-sm font-bold text-grid-text" style={{ fontFamily: "var(--font-mono)" }}>{driverLeader.points} pts</p>
             </div>
-          </div>
+          </Link>
         )}
       </div>
     </motion.div>

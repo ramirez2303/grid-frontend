@@ -7,9 +7,9 @@ import { LastRaceResult } from "@/components/home/LastRaceResult";
 import { StandingsPreview } from "@/components/home/StandingsPreview";
 import { NextGPPreview } from "@/components/home/NextGPPreview";
 import { NewsPreview } from "@/components/home/NewsPreview";
-import { DailyFact } from "@/components/home/DailyFact";
 import { QuickAccess } from "@/components/home/QuickAccess";
 import { SectionReveal } from "@/components/home/SectionReveal";
+import { DailyFactHero } from "@/components/trivia/DailyFactHero";
 
 export default function Home() {
   const { data: calendar } = useApi(getCalendar);
@@ -34,14 +34,11 @@ export default function Home() {
         </SectionReveal>
 
         <SectionReveal delay={0.1}>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              <NewsPreview />
-            </div>
-            <div className="flex flex-col justify-start">
-              <DailyFact />
-            </div>
-          </div>
+          <NewsPreview />
+        </SectionReveal>
+
+        <SectionReveal delay={0.1}>
+          <DailyFactHero />
         </SectionReveal>
 
         <SectionReveal delay={0.1}>

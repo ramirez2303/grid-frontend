@@ -25,7 +25,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GRID — Formula 1 Hub",
+  title: "GRID Formula 1 Hub",
   description:
     "Hub completo de F1 2026: equipos, circuitos, live timing, visor 3D, noticias y datos curiosos.",
 };

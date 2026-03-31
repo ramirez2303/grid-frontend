@@ -140,3 +140,18 @@ export function getDailyFact(): Promise<DailyFactItem | null> {
 export function getFactsByTag(tag: string): Promise<DailyFactItem[]> {
   return fetchApi<DailyFactItem[]>(`/api/facts?tag=${tag}`);
 }
+
+// Replay
+import type { TrackOutline, ReplayData, ElevationProfile } from "@/types/replay";
+
+export function getReplayTrack(sessionKey: number): Promise<TrackOutline> {
+  return fetchApi<TrackOutline>(`/api/replay/${sessionKey}/track`);
+}
+
+export function getReplayData(sessionKey: number): Promise<ReplayData> {
+  return fetchApi<ReplayData>(`/api/replay/${sessionKey}/data`);
+}
+
+export function getReplayElevation(sessionKey: number): Promise<ElevationProfile> {
+  return fetchApi<ElevationProfile>(`/api/replay/${sessionKey}/elevation`);
+}

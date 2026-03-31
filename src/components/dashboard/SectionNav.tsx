@@ -32,7 +32,7 @@ export function SectionNav() {
   }, []);
 
   return (
-    <div className="sticky top-16 z-30 -mx-6 px-6 py-0 bg-grid-bg/80 backdrop-blur-xl border-b border-white/[0.06]">
+    <div className="sticky top-16 z-30 -mx-6 px-6 py-0 bg-grid-bg/80 backdrop-blur-xl border-b border-white/[0.06] mt-4">
       <div className="flex items-center gap-1">
         {sections.map((s) => (
           <a

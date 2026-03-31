@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { CountryFlag } from "@/components/ui/CountryFlag";
 
 import type { CalendarRace } from "@/types/api";
@@ -17,11 +16,10 @@ export function CircuitListItem({ race, isSelected, onSelect }: CircuitListItemP
 
   return (
     <div
-      className={`flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all border ${
-        isSelected
+      className={`flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all border ${isSelected
           ? "bg-white/[0.04] border-l-2 border-l-team-mclaren border-t-0 border-r-0 border-b-0"
           : "border-transparent hover:bg-white/[0.02]"
-      }`}
+        }`}
       onClick={() => onSelect(race.circuitId)}
     >
       <CountryFlag country={race.country} size={20} />
@@ -41,14 +39,6 @@ export function CircuitListItem({ race, isSelected, onSelect }: CircuitListItemP
           <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-white/[0.06] text-grid-text-muted">R{race.round}</span>
         )}
       </div>
-
-      <Link
-        href={`/circuitos/${race.circuitId}`}
-        className="text-[10px] font-medium px-2 py-1 rounded bg-white/[0.04] text-grid-text-muted hover:text-grid-text hover:bg-white/[0.08] transition-all"
-        onClick={(e) => e.stopPropagation()}
-      >
-        Detalle
-      </Link>
     </div>
   );
 }

@@ -54,27 +54,35 @@ export function CircuitTrackView({ circuitId }: CircuitTrackViewProps) {
     // Corners
     for (const corner of track.corners) {
       const [cx, cy] = toCanvas(corner.x, corner.y, track.bounds, w, h, pad);
+      const hasName = !!corner.name;
+      const r = hasName ? 12 : 8;
 
-      // Circle
       ctx.beginPath();
-      ctx.arc(cx, cy, 10, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(255,128,0,0.8)";
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fillStyle = hasName ? "rgba(255,128,0,0.85)" : "rgba(85,85,95,0.6)";
       ctx.fill();
 
-      // Number
-      ctx.fillStyle = "#000";
-      ctx.font = "bold 8px monospace";
+      ctx.fillStyle = hasName ? "#000" : "#ccc";
+      ctx.font = hasName ? "bold 7px monospace" : "bold 7px monospace";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(String(corner.number), cx, cy);
+
+      if (hasName) {
+        ctx.fillStyle = "rgba(255,255,255,0.8)";
+        ctx.font = "bold 9px sans-serif";
+        ctx.textAlign = "left";
+        ctx.fillText(corner.name!, cx + r + 3, cy + 3);
+      }
     }
 
     // Title
+    const namedCount = track.corners.filter((c) => c.name).length;
     ctx.fillStyle = "#8A8A95";
     ctx.font = "bold 10px sans-serif";
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
-    ctx.fillText(`${track.corners.length} CURVAS`, 8, 8);
+    ctx.fillText(`${track.corners.length} CURVAS${namedCount > 0 ? ` • ${namedCount} con nombre` : ""}`, 8, 8);
   }, [track]);
 
   if (loading) {

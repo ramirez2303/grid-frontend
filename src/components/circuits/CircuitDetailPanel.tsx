@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { getCircuit, getResults } from "@/lib/api";
 import { CircuitHero } from "./CircuitHero";
 import { CircuitTrackView } from "./CircuitTrackView";
+import { CircuitCornerList } from "./CircuitCornerList";
 import { CircuitTechnical } from "./CircuitTechnical";
 import { CircuitElevation } from "./CircuitElevation";
 import { CircuitRaceResult } from "./CircuitRaceResult";
@@ -48,6 +49,9 @@ export function CircuitDetailPanel({ race }: CircuitDetailPanelProps) {
 
           <SectionReveal>
             <CircuitTrackView circuitId={circuit.id} />
+            <div className="mt-4">
+              <CircuitCornerList circuitId={circuit.id} />
+            </div>
           </SectionReveal>
 
           <SectionReveal delay={0.05}>

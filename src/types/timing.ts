@@ -106,3 +106,8 @@ export interface GapDataPoint { lap: number; gap: number }
 export interface DriverGapSeries { driverNumber: number; abbreviation: string; teamColor: string; gaps: GapDataPoint[] }
 export interface GapPitStopMarker { driverNumber: number; lap: number }
 export interface GapChartData { drivers: DriverGapSeries[]; totalLaps: number; safetyCarLaps: number[]; pitStopLaps: GapPitStopMarker[] }
+
+// Telemetry types
+export interface TelemetryPoint { distance: number; speed: number; throttle: number; brake: number; gear: number }
+export interface TelemetryDriverData { driverNumber: number; abbreviation: string; teamColor: string; points: TelemetryPoint[] }
+export interface TelemetryData { driver1: TelemetryDriverData; driver2: TelemetryDriverData; lap: number; totalDistance: number }

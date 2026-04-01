@@ -15,6 +15,7 @@ import { WeatherPanel } from "@/components/live/WeatherPanel";
 import { StrategyView } from "@/components/live/StrategyView";
 import { FutureSessionState } from "@/components/live/FutureSessionState";
 import { GapChart } from "@/components/live/GapChart";
+import { TelemetryComparison } from "@/components/live/TelemetryComparison";
 
 import type { SessionInfo } from "@/types/timing";
 
@@ -25,7 +26,7 @@ export default function LivePage() {
   const [meetingKey, setMeetingKey] = useState<number | null>(null);
   const [sessions, setSessions] = useState<SessionInfo[]>([]);
   const [sessionKey, setSessionKey] = useState<number | null>(null);
-  const [viewMode, setViewMode] = useState<"timing" | "replay">("timing");
+  const [viewMode, setViewMode] = useState<"timing" | "replay" | "telemetry">("timing");
 
   useEffect(() => { if (!meetingKey) return; getSessions(meetingKey).then(setSessions).catch(() => setSessions([])); }, [meetingKey]);
   useEffect(() => { if (!meetings?.length) return; const now = new Date(); const c = meetings.filter((m) => new Date(m.dateStart) < now && !m.name.includes("Testing")); if (c[c.length - 1]) setMeetingKey(c[c.length - 1]!.meetingKey); }, [meetings]);
@@ -59,9 +60,14 @@ export default function LivePage() {
         <button onClick={() => setViewMode("replay")} disabled={!isRace} className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${viewMode === "replay" ? "bg-team-mclaren text-black" : "bg-grid-surface border border-white/[0.06] text-grid-text-muted"} ${!isRace ? "opacity-40 cursor-not-allowed" : ""}`} title={!isRace ? "Solo disponible para carreras" : ""}>
           Race Replay
         </button>
+        <button onClick={() => setViewMode("telemetry")} disabled={!isRace} className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${viewMode === "telemetry" ? "bg-team-mclaren text-black" : "bg-grid-surface border border-white/[0.06] text-grid-text-muted"} ${!isRace ? "opacity-40 cursor-not-allowed" : ""}`} title={!isRace ? "Solo disponible para carreras" : ""}>
+          Telemetría
+        </button>
       </div>
 
-      {viewMode === "replay" && sessionKey ? (
+      {viewMode === "telemetry" && sessionKey && timing ? (
+        <TelemetryComparison sessionKey={sessionKey} entries={timing.entries} totalLaps={timing.totalLaps} />
+      ) : viewMode === "replay" && sessionKey ? (
         <ReplayLayout sessionKey={sessionKey} />
       ) : loading ? (
         <div className="flex h-64 items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-2 border-grid-text-muted border-t-team-mclaren" /></div>

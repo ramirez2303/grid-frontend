@@ -121,6 +121,12 @@ export function getGapChart(sessionKey: number): Promise<GapChartData> {
   return fetchApi<GapChartData>(`/api/timing/${sessionKey}/gaps`);
 }
 
+import type { TelemetryData } from "@/types/timing";
+
+export function getTelemetry(sessionKey: number, driver1: number, driver2: number, lap: number): Promise<TelemetryData> {
+  return fetchApi<TelemetryData>(`/api/timing/${sessionKey}/telemetry?driver1=${driver1}&driver2=${driver2}&lap=${lap}`);
+}
+
 // News + Glossary
 import type { NewsResponse, GlossaryTerm } from "@/types/news";
 

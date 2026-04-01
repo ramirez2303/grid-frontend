@@ -11,7 +11,7 @@ interface PitStopPanelProps {
 
 function TyreDot({ compound }: { compound: string }) {
   const color = COMPOUND_COLORS[compound as keyof typeof COMPOUND_COLORS] ?? "#888";
-  return <span className="h-3.5 w-3.5 rounded-full border-2 inline-block" style={{ borderColor: color }} />;
+  return <span className="h-3.5 w-3.5 rounded-full inline-block" style={{ backgroundColor: color, border: "2px solid rgba(255,255,255,0.15)" }} />;
 }
 
 export function PitStopPanel({ pitStops }: PitStopPanelProps) {

@@ -37,8 +37,8 @@ export function NewsCard({ news, featured = false }: NewsCardProps) {
       className={`group block overflow-hidden rounded-xl bg-grid-surface border border-white/[0.06] hover:border-white/10 hover:shadow-lg transition-all ${featured ? "" : ""}`}
     >
       {/* Image area */}
-      {featured && (
-        <div className="h-36 bg-grid-card flex items-center justify-center border-b border-white/[0.04]">
+      {(featured || news.imageUrl) && (
+        <div className={`${featured ? "h-36" : "h-28"} bg-grid-card flex items-center justify-center border-b border-white/[0.04]`}>
           {news.imageUrl ? (
             <img src={news.imageUrl} alt="" className="w-full h-full object-cover" />
           ) : (
